@@ -27,5 +27,7 @@ public class LinearPlatform : MonoBehaviour {
 		offset = Camera.main.WorldToScreenPoint(gameObject.transform.position)
 			- Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, gameObject.transform.position.y, gameObject.transform.position.z));
 	}
+	
+	//test change
 
 }
