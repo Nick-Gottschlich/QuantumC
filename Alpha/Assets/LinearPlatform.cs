@@ -11,17 +11,34 @@ public class LinearPlatform : MonoBehaviour {
 	public bool rotation = false;
 	public Axis rotationAxis = Axis.x;
 	public float rotationSpeed = 50f;
-	Vector3 initialMousePoint;
+	public float correctAngle = 0f;
+	public static bool correctPosition = true;
+	Quaternion toRot = Quaternion.identity;
 
 	// Use this for initialization
 	void Start () {
-	
-
+		toRot = transform.rotation;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (rotation) {
+			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow)) {
+				Rotate (false);
+			}
+			if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
+				Rotate (true);
+			}
 
+			if (rotationAxis.Equals(Axis.x)) {
+				correctPosition = transform.eulerAngles.x == correctAngle;
+			} else if (rotationAxis.Equals(Axis.y)) {
+				correctPosition = transform.eulerAngles.y == correctAngle;
+			} else if (rotationAxis.Equals(Axis.z)) {
+				correctPosition = transform.eulerAngles.z == correctAngle;
+			}
+		}
+		transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotationSpeed);
 	}
 
 	void OnMouseDown() {
@@ -34,34 +51,27 @@ public class LinearPlatform : MonoBehaviour {
 //		offset = screenpoint - new Vector3 (0, Input.mousePosition.y, 0);
 
 		print ("On Mouse Down" + offset);
-		initialMousePoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10f));
 	}
 
 	void OnMouseDrag() {
-		if (rotation) {
-			Rotate();
-		} else {
-			Vector3 curScreenPoint = new Vector3 (screenpoint.x, Input.mousePosition.y , screenpoint.z);
-			Vector3 curPos = Camera.main.ScreenToWorldPoint(curScreenPoint + offset);
-	//		Vector3 curPos = transform.position;
-	//		curPos += new Vector3(0, Input.mousePosition.y
-			transform.position = curPos;
-	//		print ("On Mouse Drag, Before: " + Camera.main.ScreenToWorldPoint(curScreenPoint) + "After: " + curPos);
-			print (screenpoint);
-		}
+		Vector3 curScreenPoint = new Vector3 (screenpoint.x, Input.mousePosition.y , screenpoint.z);
+		Vector3 curPos = Camera.main.ScreenToWorldPoint(curScreenPoint + offset);
+//		Vector3 curPos = transform.position;
+//		curPos += new Vector3(0, Input.mousePosition.y
+		transform.position = curPos;
+//		print ("On Mouse Drag, Before: " + Camera.main.ScreenToWorldPoint(curScreenPoint) + "After: " + curPos);
+		print (screenpoint);
 	}
 
-	void Rotate() {
-		Vector3 newMousePoint = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, -10f));
-		Vector3 rotation = (initialMousePoint - newMousePoint) * rotationSpeed;
-		rotation.z = 0f;
+	void Rotate(bool positive) {
+		float angle = positive ? 90f : -90f;
 		if (rotationAxis.Equals(Axis.x)) {
-			rotation.y = 0f;
+			toRot *= Quaternion.Euler (angle, 0f, 0f);
 		} else if (rotationAxis.Equals(Axis.y)) {
-			rotation.x = 0f;
+			toRot *= Quaternion.Euler (0f, angle, 0f);
+		} else if (rotationAxis.Equals(Axis.z)) {
+			toRot *= Quaternion.Euler (0f, 0f, angle);
 		}
-		transform.Rotate (rotation, Space.World);
-		initialMousePoint = newMousePoint;
 	}
 	
 	//test change
