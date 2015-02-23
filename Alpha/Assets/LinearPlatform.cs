@@ -7,6 +7,10 @@ public class LinearPlatform : MonoBehaviour {
 
 	private Vector3 screenpoint;
 	private Vector3 offset;
+	
+	bool dragEnabled = false;
+	Vector3 dragStartPosition;
+	float dragStartDistance;
 
 	public bool rotation = false;
 	public Axis rotationAxis = Axis.x;
@@ -22,6 +26,11 @@ public class LinearPlatform : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
+		{
+			dragEnabled = false;
+		}
+
 		if (rotation) {
 			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow)) {
 				Rotate (false);
@@ -41,26 +50,11 @@ public class LinearPlatform : MonoBehaviour {
 		transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotationSpeed);
 	}
 
-	void OnMouseDown() {
-		screenpoint = Camera.main.WorldToScreenPoint (gameObject.transform.position);
-		offset = gameObject.transform.position
-			- Camera.main.ScreenToWorldPoint(new Vector3(screenpoint.x, Input.mousePosition.y, screenpoint.z));
-//		offset = gameObject.transform.position - Camera.main.ScreenToWorldPoint (screenpoint);
-
-//		Vector3 yay = new Vector3 (0, screenpoint.y, 0);
-//		offset = screenpoint - new Vector3 (0, Input.mousePosition.y, 0);
-
-		print ("On Mouse Down" + offset);
-	}
-
-	void OnMouseDrag() {
-		Vector3 curScreenPoint = new Vector3 (screenpoint.x, Input.mousePosition.y , screenpoint.z);
-		Vector3 curPos = Camera.main.ScreenToWorldPoint(curScreenPoint + offset);
-//		Vector3 curPos = transform.position;
-//		curPos += new Vector3(0, Input.mousePosition.y
-		transform.position = curPos;
-//		print ("On Mouse Drag, Before: " + Camera.main.ScreenToWorldPoint(curScreenPoint) + "After: " + curPos);
-		print (screenpoint);
+	void OnMouseDown()
+	{
+		dragEnabled = true;
+		dragStartPosition = transform.position;
+		dragStartDistance = (Camera.main.transform.position - transform.position).magnitude;
 	}
 
 	void Rotate(bool positive) {
@@ -73,6 +67,13 @@ public class LinearPlatform : MonoBehaviour {
 			toRot *= Quaternion.Euler (0f, 0f, angle);
 		}
 	}
-	
-	//test change
+
+	void OnMouseDrag()
+	{
+		if (dragEnabled)
+		{
+			Vector3 worldDragTo = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, dragStartDistance));
+			transform.position = new Vector3(dragStartPosition.x, worldDragTo.y, dragStartPosition.z);
+		}
+	}
 }
