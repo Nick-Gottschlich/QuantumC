@@ -16,11 +16,14 @@ public class PlayerMovement : MonoBehaviour {
 
 	Vector3 gravity;
 
+	GameObject path_end1;
+
 	// Use this for initialization
 	void Start () {
 		starting_location = transform.position;
 
 		ChangePlane (0);
+		path_end1 = GameObject.Find ("Path_End");
 	}
 	
 	// Update is called once per frame
@@ -35,12 +38,24 @@ public class PlayerMovement : MonoBehaviour {
 		}
 	}
 
+	float CalcDistance(float x1, float x2, float y1, float y2){
+		return Mathf.Sqrt (Mathf.Pow((x1 - x2),2) + Mathf.Pow((y1 - y2),2));
+	}
+
 	void FixedUpdate(){
 		if(play){
+
+			if(CalcDistance(transform.position.x, path_end1.transform.position.x, transform.position.y, path_end1.transform.position.y) <= .2f){
+				print("Distance: " + CalcDistance(transform.position.x, path_end1.transform.position.x, transform.position.y, path_end1.transform.position.y));
+				play = false;
+				rigidbody.velocity = Vector3.zero;
+				return;
+			}
+
 //			rigidbody.MovePosition(rigidbody.position + move_direction * speed * Time.fixedDeltaTime);
 
 
-
+			
 			rigidbody.MovePosition(rigidbody.position + move_direction);
 		}
 
