@@ -12,7 +12,7 @@ public class LinearPlatform : MonoBehaviour {
 	public Axis rotationAxis = Axis.x;
 	public float rotationSpeed = 50f;
 	public float correctAngle = 0f;
-	public static bool correctPosition = true;
+	public static bool correctPosition = false;
 	Quaternion toRot = Quaternion.identity;
 
 	// Use this for initialization
@@ -31,11 +31,11 @@ public class LinearPlatform : MonoBehaviour {
 			}
 
 			if (rotationAxis.Equals(Axis.x)) {
-				correctPosition = transform.eulerAngles.x == correctAngle;
+				correctPosition = transform.eulerAngles.x <= correctAngle+0.1f && transform.eulerAngles.x >= correctAngle-0.1f;
 			} else if (rotationAxis.Equals(Axis.y)) {
-				correctPosition = transform.eulerAngles.y == correctAngle;
+				correctPosition = transform.eulerAngles.y <= correctAngle+0.1f && transform.eulerAngles.y >= correctAngle-0.1f;
 			} else if (rotationAxis.Equals(Axis.z)) {
-				correctPosition = transform.eulerAngles.z == correctAngle;
+				correctPosition = transform.eulerAngles.z <= correctAngle+0.1f && transform.eulerAngles.z >= correctAngle-0.1f;
 			}
 		}
 		transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotationSpeed);
