@@ -41,7 +41,7 @@ public class PlayerMovement : MonoBehaviour {
 			gravity = Vector3.zero;
 			move_direction = down_increment;
 			transform.position = starting_location;
-			rigidbody.velocity = Vector3.zero;
+			GetComponent<Rigidbody>().velocity = Vector3.zero;
 			touched = false;
 		}
 
@@ -55,11 +55,11 @@ public class PlayerMovement : MonoBehaviour {
 
 	void FixedUpdate(){
 		if(play){
-			rigidbody.MovePosition(rigidbody.position + move_direction);
+			GetComponent<Rigidbody>().MovePosition(GetComponent<Rigidbody>().position + move_direction);
 		}
 
 		//Apply gravity
-		rigidbody.AddForce (gravity);
+		GetComponent<Rigidbody>().AddForce (gravity);
 	}
 
 	void OnCollisionEnter(Collision coll){
@@ -70,7 +70,7 @@ public class PlayerMovement : MonoBehaviour {
 	}
 
 	void ChangePlane(int plane){
-		rigidbody.velocity = Vector3.zero;
+		GetComponent<Rigidbody>().velocity = Vector3.zero;
 		move_direction = Vector3.zero;
 
 		if(plane == 0){ // "normal" plane of movement, facing -y
@@ -127,48 +127,48 @@ public class PlayerMovement : MonoBehaviour {
 
 		if (!LinearPlatform.correctPosition) return;
 		if(coll.tag == "Move_Left"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			//			move_direction = -1*transform.right;
 			move_direction = left_increment;
 		}
 		else if(coll.tag == "Move_Right"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			//			move_direction = transform.right;
 			move_direction = right_increment;
 		}
 		else if(coll.tag == "Move_Down"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			//			move_direction = -1*transform.up;
 			move_direction = down_increment;
 		}
 		else if(coll.tag == "Move_Up"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			//			move_direction = transform.up;
 			move_direction = up_increment;
 		}
 		else if(coll.tag == "Change_Plane_Y+"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			ChangePlane(1);
 		}
 		else if(coll.tag == "Change_Plane_Y-"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			ChangePlane(0);
 		}
 		else if(coll.tag == "Change_Plane_X+"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			ChangePlane(2);
 		}
 		else if(coll.tag == "Change_Plane_X-"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			print ("nope");
 			ChangePlane(3);
 		}
 		else if(coll.tag == "Change_Plane_Z+"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			ChangePlane(4);
 		}
 		else if(coll.tag == "Change_Plane_Z-"){
-			print ("Collision with: " + coll.collider.tag);
+			print ("Collision with: " + coll.GetComponent<Collider>().tag);
 			ChangePlane(5);
 		}
 	}

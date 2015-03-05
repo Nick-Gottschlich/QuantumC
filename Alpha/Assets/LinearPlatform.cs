@@ -5,10 +5,11 @@ public enum Axis {x, y, z}
 
 public class LinearPlatform : MonoBehaviour {
 
+	public GameObject trigger;
+
 	private Vector3 screenpoint;
 	private Vector3 offset;
-	
-	bool dragEnabled = false;
+
 	Vector3 dragStartPosition;
 	float dragStartDistance;
 
@@ -19,6 +20,14 @@ public class LinearPlatform : MonoBehaviour {
 	public static bool correctPosition = false;
 	Quaternion toRot = Quaternion.identity;
 
+
+	// Gizmos
+	void OnDrawGizmos() {
+//		Gizmos.color = Color.green;
+//		Gizmos.DrawLine (transform.position, trigger.transform.position);
+	}
+
+
 	// Use this for initialization
 	void Start () {
 		toRot = transform.rotation;
@@ -26,18 +35,12 @@ public class LinearPlatform : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetMouseButtonUp(0) || Input.GetMouseButtonUp(1))
-		{
-			dragEnabled = false;
-		}
+
 
 		if (rotation) {
-			if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.LeftArrow)) {
-				Rotate (false);
-			}
-			if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.RightArrow)) {
-				Rotate (true);
-			}
+//			if (trigger.GetComponent<Pad>().rotate_activate == true) {
+//				Rotate();	
+//			}
 
 			if (rotationAxis.Equals(Axis.x)) {
 				correctPosition = transform.eulerAngles.x <= correctAngle+0.1f && transform.eulerAngles.x >= correctAngle-0.1f;
@@ -46,19 +49,13 @@ public class LinearPlatform : MonoBehaviour {
 			} else if (rotationAxis.Equals(Axis.z)) {
 				correctPosition = transform.eulerAngles.z <= correctAngle+0.1f && transform.eulerAngles.z >= correctAngle-0.1f;
 			}
+
 		}
 		transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotationSpeed);
 	}
 
-	void OnMouseDown()
-	{
-		dragEnabled = true;
-		dragStartPosition = transform.position;
-		dragStartDistance = (Camera.main.transform.position - transform.position).magnitude;
-	}
-
-	void Rotate(bool positive) {
-		float angle = positive ? 90f : -90f;
+	public void Rotate() {
+		float angle = 90f;
 		if (rotationAxis.Equals(Axis.x)) {
 			toRot *= Quaternion.Euler (angle, 0f, 0f);
 		} else if (rotationAxis.Equals(Axis.y)) {
@@ -66,14 +63,9 @@ public class LinearPlatform : MonoBehaviour {
 		} else if (rotationAxis.Equals(Axis.z)) {
 			toRot *= Quaternion.Euler (0f, 0f, angle);
 		}
+
+		//transform.rotation = Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotationSpeed);
 	}
 
-	void OnMouseDrag()
-	{
-		if (dragEnabled)
-		{
-			Vector3 worldDragTo = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, dragStartDistance));
-			transform.position = new Vector3(dragStartPosition.x, worldDragTo.y, dragStartPosition.z);
-		}
-	}
+
 }
