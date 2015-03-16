@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour {
 	public PlayerControl	carrying;
 	public PlayerControl	carriedBy;
 
-	public Pad 				head;
+	Pad 					head;
 
 	float lastMove = 0f;
 
@@ -28,6 +28,7 @@ public class PlayerControl : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		head = transform.FindChild("Pad").GetComponent<Pad>();
 	}
 	
 	// Update is called once per frame
@@ -103,11 +104,11 @@ public class PlayerControl : MonoBehaviour {
 		Vector3 newPos;
 
 		if (plane == 'X') {
-			newPos = new Vector3 (gameObject.transform.position.x, curPad.transform.position.y, curPad.transform.position.z);
+			newPos = new Vector3 (curPad.transform.position.x + 0.5f, curPad.transform.position.y, curPad.transform.position.z);
 		} else if (plane == 'Y') {
-			newPos = new Vector3 (curPad.transform.position.x, gameObject.transform.position.y, curPad.transform.position.z);
+			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
 		} else{
-			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, gameObject.transform.position.z);
+			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z + 0.5f);
 		}
 		if (!distanceSet) {
 			distanceSet = true;
