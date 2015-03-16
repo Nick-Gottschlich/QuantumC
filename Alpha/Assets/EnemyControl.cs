@@ -4,110 +4,138 @@ using System.Collections;
 public class EnemyControl : MonoBehaviour {
 
 	// Variable to determine which player
-	//public bool 		player1or2;
+	//public bool 			player1or2;
+	//public int				playerNum = 1;
 	
-	enum Direction {updown, leftright};
-
-	public GameObject	up;
-	public GameObject	down;
-	public GameObject	left;
-	public GameObject	right;
-
-	public float 		smooth = 10f;
-	public Pad			curPad;
+	public GameObject		up;
+	public GameObject		down;
+	public GameObject		left;
+	public GameObject		right;
 	
-	float 				journeyDistance = 0f;
-	float 				xdirection1;
-	float 				zdirection1;
-	bool 				distanceSet = false;
-	GameObject			searchPos;
-	Direction 			dir = Direction.updown;
-	int					i = 0;
-
-	//Pad					curPadStore;
-
+	public float 			smooth = 10f;
+	public Pad				curPad;
+	//0 is right, 1 is left, 2 is down, 3 is up
+	public int				enemyDir = 0;
+	float 					journeyDistance = 0f;
+	float					xdirection;
+	float					zdirection;
+	bool 					distanceSet = false;
+	bool					enemyStopped = false;
+	GameObject 				searchPos;
+	
+	Vector3 				curPos;
+	
+	//public PlayerControl	carrying;
+	//public PlayerControl	carriedBy;
+	
+	//public Pad 				head;
+	
 	float lastMove = 0f;
-
+	
 	// Use this for initialization
 	void Start () {
-		xdirection1 = 0;
-		zdirection1 = -1;
-		searchPos = down;
+		if (enemyDir == 0) {
+			xdirection = 1;
+			zdirection = 0;
+		
+			searchPos = right;
+		}
+		if (enemyDir == 1) {
+			xdirection = -1;
+			zdirection = 0;
+			
+			searchPos = left;
+		}
+		if (enemyDir == 2) {
+			xdirection = 0;
+			zdirection = -1;
+			
+			searchPos = down;
+		}
+		if (enemyDir == 3) {
+			xdirection = 0;
+			zdirection = 1;
+			
+			searchPos = up;
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		xdirection1 = 0;
-		zdirection1 = -1;
-		searchPos = down;
 		if (Time.time - lastMove > 0.1f) {
-			/*print(i);
-			if (i >= 4) {
-				i = 0;
-			}*/
+			curPos = transform.position;
+			
+			if (enemyStopped) {
+				if (enemyDir == 0) {
+					//enemy was going right, swap to left
+					xdirection = -1;
+					zdirection = 0;
+				
+					searchPos = left;
+					enemyDir += 1;
+				}
+				else if (enemyDir == 1) {
+					//enemy was going left, swap to right
+					xdirection = 1;
+					zdirection = 0;
+					
+					searchPos = right;
+					enemyDir -= 1;
+				}
+				
+				if (enemyDir == 2) {
+					//enemy was going down, swap to up
+					xdirection = 0;
+					zdirection = 1;
+					
+					searchPos = up;
+					enemyDir += 1;
+				}
+				else if (enemyDir == 3) {
+					//enemy was going up, swap to down
+					xdirection = 0;
+					zdirection = -1;
+					
+					searchPos = down;
+					enemyDir -= 1;
+				}
+				enemyStopped = false;
+			}
+			
 			if (searchPos) {
 				lastMove = Time.time;
-				Collider[] hits = Physics.OverlapSphere(searchPos.transform.position, 0.5f);
+				Vector3 startPos = searchPos.transform.position;
+				Collider[] hits = Physics.OverlapSphere(startPos, 0.5f);
 				if (hits.Length > 0) {
-					Pad pad = hits[0].GetComponentInParent<Pad>();
-					curPad = pad;
-					distanceSet = false;
-					//break;
-				} 
-				/*else {
-					print ("asdf");
-					if (i < 2) {
-						if (dir == Direction.updown) {
-							if (searchPos == down) {
-								xdirection1 = 0;
-								zdirection1 = 1;
-								searchPos = up;
-							}
-							if (searchPos == up) {
-								xdirection1 = 0;
-								zdirection1 = -1;
-								searchPos = down;
-							}
+					Pad pad = null;
+					bool hasPlayer = false;
+					foreach (Collider c in hits) {
+						if (c.CompareTag("Pad")) {
+							pad = c.GetComponentInParent<Pad>();
 						}
-						else {
-							if (searchPos == left) {
-								xdirection1 = 1;
-								zdirection1 = 0;
-								searchPos = right;
-							}
-							if (searchPos == right) {
-								xdirection1 = -1;
-								zdirection1 = 0;
-								searchPos = left;
-							}
-						}
+						//else if (c.CompareTag("enemy")
+						//kill that player (restart level? checkpoint? health?)
 					}
-					else {
-						if (dir == Direction.updown){
-							dir = Direction.leftright;
-						}
-						else {
-							dir = Direction.updown;
-						}
-						i = 0;
+					if (!hasPlayer && pad) {
+						curPad = pad;
+						distanceSet = false;
 					}
-				}*/
+				}
 			}
-			i++;				
 		}
-
-		Vector3 newPos = new Vector3(curPad.transform.position.x, gameObject.transform.position.y, curPad.transform.position.z);
+		
+		Vector3 newPos = new Vector3(curPad.transform.position.x, curPad.transform.position.y + 0.6f, curPad.transform.position.z);
 		if (!distanceSet) {
 			distanceSet = true;
 			journeyDistance = Vector3.Distance(transform.position, newPos);
 		}
-
+		
 		float fracJourney = Time.deltaTime * smooth / journeyDistance;
 		transform.position = Vector3.Lerp (transform.position, newPos, fracJourney);
-	}
-
-	void OnDrawGizmos() {
-		Gizmos.color = Color.red;
-		//Gizmos.DrawSphere(transform.position, 1.5f);
+		
+		if (curPos == transform.position) {
+			print ("enemy stopped");
+			enemyStopped = true;
+		}
 	}
 }
