@@ -49,7 +49,6 @@ public class PlayerControl : MonoBehaviour {
 
 			GameObject searchPos = null;
 
-<<<<<<< HEAD
 			if (zdirection > 0) {
 				searchPos = up;
 			}
@@ -66,20 +65,19 @@ public class PlayerControl : MonoBehaviour {
 			if (searchPos) {
 				lastMove = Time.time;
 				Vector3 startPos = searchPos.transform.position;
-				if (carriedBy) startPos.y -= 0.6f;
-				Collider[] hits = Physics.OverlapSphere(startPos, 0.5f);
+				if (carriedBy) {
+					startPos.y -= 0.6f;
+				}
+				Collider[] hits = Physics.OverlapSphere(startPos, 0.25f);
 				if (hits.Length > 0) {
 					Pad pad = null;
 					bool hasPlayer = false;
-					print (hits.Length);
 					foreach (Collider c in hits) {
-						print (c.tag);
 						if (c.CompareTag("Player")) {
 							Mount(c);
 							hasPlayer = true;
 						} else if (c.CompareTag("Pad")) {
 							pad = c.GetComponentInParent<Pad>();
-							print (pad);
 						}
 					}
 					if (!hasPlayer && pad) {
@@ -88,36 +86,20 @@ public class PlayerControl : MonoBehaviour {
 							carriedBy.carrying = null;
 							carriedBy = null;
 						}
-=======
-				if (zdirection1 > 0) {
-					searchPos = up;
-				}
-				if (zdirection1 < 0) {
-					searchPos = down;
-				}
-				if (xdirection1 < 0) {
-					searchPos = left;
-				}
-				if (xdirection1 > 0) {
-					searchPos = right;
-				}
-				
-				if (searchPos) {
-					lastMove = Time.time;
-					Collider[] hits = Physics.OverlapSphere(searchPos.transform.position, 0.5f);
-					if (hits.Length > 0) {
-						Pad[] pads = hits[0].GetComponentsInParent<Pad>();
-						curPad = pads[0];
->>>>>>> Updated Player control for different plane detection.
 						distanceSet = false;
 					}
+				} else {
+					RaycastHit hitPad;
+					if (Physics.Raycast(searchPos.transform.position, Vector3.up, out hitPad, Mathf.Infinity)) {
+						MoveToPad (hitPad.collider.GetComponentInParent<Pad>());
+					} else if (Physics.Raycast(searchPos.transform.position, Vector3.down, out hitPad, Mathf.Infinity)) {
+						MoveToPad (hitPad.collider.GetComponentInParent<Pad>());
+					}
+
 				}
 			}
 		}
 
-<<<<<<< HEAD
-		Vector3 newPos = new Vector3(curPad.transform.position.x, curPad.transform.position.y + 0.6f, curPad.transform.position.z);
-=======
 		Vector3 newPos;
 
 		if (plane == 'X') {
@@ -127,7 +109,6 @@ public class PlayerControl : MonoBehaviour {
 		} else{
 			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, gameObject.transform.position.z);
 		}
->>>>>>> Updated Player control for different plane detection.
 		if (!distanceSet) {
 			distanceSet = true;
 			journeyDistance = Vector3.Distance(transform.position, newPos);
@@ -135,6 +116,17 @@ public class PlayerControl : MonoBehaviour {
 
 		float fracJourney = Time.deltaTime * smooth / journeyDistance;
 		transform.position = Vector3.Lerp (transform.position, newPos, fracJourney);
+	}
+
+	void MoveToPad (Pad pad) {
+		if (pad) {
+			curPad = pad;
+			if (carriedBy) {
+				carriedBy.carrying = null;
+				carriedBy = null;
+			}
+			distanceSet = false;
+		}
 	}
 
 	void Mount(Collider c) {
