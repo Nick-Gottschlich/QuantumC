@@ -22,6 +22,7 @@ public class EnemyControl : MonoBehaviour {
 	bool 					distanceSet = false;
 	bool					enemyStopped = false;
 	GameObject 				searchPos;
+	int						swap = 0;
 	
 	Vector3 				curPos;
 	
@@ -62,6 +63,7 @@ public class EnemyControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		print (swap);
 		if (Time.time - lastMove > 0.1f) {
 			curPos = transform.position;
 			
@@ -70,9 +72,14 @@ public class EnemyControl : MonoBehaviour {
 					//enemy was going right, swap to left
 					xdirection = -1;
 					zdirection = 0;
-				
+					
 					searchPos = left;
 					enemyDir += 1;
+					
+					if (swap >= 20) {
+						enemyDir = 2;
+						swap = 0;
+					}
 				}
 				else if (enemyDir == 1) {
 					//enemy was going left, swap to right
@@ -81,6 +88,11 @@ public class EnemyControl : MonoBehaviour {
 					
 					searchPos = right;
 					enemyDir -= 1;
+					
+					if (swap >= 20) {
+						enemyDir = 2;
+						swap = 0;
+					}
 				}
 				
 				if (enemyDir == 2) {
@@ -90,6 +102,11 @@ public class EnemyControl : MonoBehaviour {
 					
 					searchPos = up;
 					enemyDir += 1;
+					
+					if (swap >= 20) {
+						enemyDir = 0;
+						swap = 0;
+					}
 				}
 				else if (enemyDir == 3) {
 					//enemy was going up, swap to down
@@ -98,8 +115,13 @@ public class EnemyControl : MonoBehaviour {
 					
 					searchPos = down;
 					enemyDir -= 1;
+					
+					if (swap >= 20) {
+						enemyDir = 0;
+						swap = 0;
+					}
 				}
-				enemyStopped = false;
+				//enemyStopped = false;
 			}
 			
 			if (searchPos) {
@@ -113,8 +135,9 @@ public class EnemyControl : MonoBehaviour {
 						if (c.CompareTag("Pad")) {
 							pad = c.GetComponentInParent<Pad>();
 						}
-						//else if (c.CompareTag("enemy")
-						//kill that player (restart level? checkpoint? health?)
+						else if (c.CompareTag("Player")) {
+							Application.LoadLevel(Application.loadedLevel);
+						}
 					}
 					if (!hasPlayer && pad) {
 						curPad = pad;
@@ -136,6 +159,11 @@ public class EnemyControl : MonoBehaviour {
 		if (curPos == transform.position) {
 			print ("enemy stopped");
 			enemyStopped = true;
+			swap += 1;
+		}
+		else {
+			enemyStopped = false;
+			swap = 0;
 		}
 	}
 }
