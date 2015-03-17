@@ -63,7 +63,7 @@ public class EnemyControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		print (swap);
+		//print (swap);
 		if (Time.time - lastMove > 0.1f) {
 			curPos = transform.position;
 			
@@ -90,7 +90,7 @@ public class EnemyControl : MonoBehaviour {
 					enemyDir -= 1;
 					
 					if (swap >= 20) {
-						enemyDir = 2;
+						enemyDir = 3;
 						swap = 0;
 					}
 				}
@@ -117,7 +117,7 @@ public class EnemyControl : MonoBehaviour {
 					enemyDir -= 1;
 					
 					if (swap >= 20) {
-						enemyDir = 0;
+						enemyDir = 1;
 						swap = 0;
 					}
 				}
@@ -157,7 +157,7 @@ public class EnemyControl : MonoBehaviour {
 		transform.position = Vector3.Lerp (transform.position, newPos, fracJourney);
 		
 		if (curPos == transform.position) {
-			print ("enemy stopped");
+			//print ("enemy stopped");
 			enemyStopped = true;
 			swap += 1;
 		}
