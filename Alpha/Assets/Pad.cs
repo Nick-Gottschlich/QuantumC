@@ -4,8 +4,13 @@ using System.Collections;
 
 public class Pad : MonoBehaviour {
 
-	public bool teleport;
+	public bool 	isSlope = false;
 
+	public Pad		teleportOnUp;
+	public Pad		teleportOnDown;
+	public Pad		teleportOnLeft;
+	public Pad		teleportOnRight;
+	
 	// Use this for initialization
 	void Start () {
 		
@@ -13,14 +18,6 @@ public class Pad : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (teleport) {
-					
-		}
-	}
-	void OnGizmosDraw() {
-		if (teleport) {
-			Gizmos.color = Color.red;
-			Gizmos.DrawSphere (transform.position, 1f);
-		}
+
 	}
 }
