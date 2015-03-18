@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
@@ -33,15 +33,36 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (transform.rotation.z == 90 || transform.rotation.z == 270)
+//		print ("plane: " + plane);
+//		print ("Rotz: " + transform.rotation.eulerAngles.z);
+
+		//Set player's rotation to rotation of pad
+		if (plane == 'X') {
+			float temp = transform.rotation.eulerAngles.x;
+//			transform.rotation = curPad.transform.parent.transform.rotation;
+			transform.localEulerAngles = new Vector3 (0f, curPad.transform.parent.transform.rotation.eulerAngles.y, curPad.transform.parent.transform.rotation.eulerAngles.z);
+		} else if (plane == 'Y') {
+			float temp = transform.rotation.y;
+//			transform.rotation = curPad.transform.parent.transform.rotation;
+			transform.localEulerAngles = new Vector3(curPad.transform.parent.transform.rotation.eulerAngles.x, 0f, curPad.transform.parent.transform.rotation.eulerAngles.z);
+		} else {
+			float temp = transform.rotation.z;
+//			transform.rotation = curPad.transform.parent.transform.rotation;
+			transform.localEulerAngles = new Vector3(curPad.transform.parent.transform.rotation.eulerAngles.x, curPad.transform.parent.transform.rotation.eulerAngles.y, 0f);
+		}
+
+		if ((transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9) 
+		    || (transform.rotation.eulerAngles.z >= 269.9 && transform.rotation.eulerAngles.z <= 270.9)
+			|| ((transform.rotation.eulerAngles.z >= 269.9 && transform.rotation.eulerAngles.z <= 270.9)
+			    && (transform.rotation.eulerAngles.y >= 89.9 && transform.rotation.eulerAngles.z <= 90.9)))
 			plane = 'X';
-		else if (transform.rotation.z == 0 && transform.rotation.x == 0)
+		else if ((transform.rotation.eulerAngles.z >= 179.9 && transform.rotation.eulerAngles.z <= 180.9) 
+		         || (transform.rotation.eulerAngles.z == 0 && transform.rotation.eulerAngles.x == 0))
 			plane = 'Y';
-		else if (transform.rotation.x == 90 || transform.rotation.x == 270)
+		else if ((transform.rotation.eulerAngles.x >= 89.9 && transform.rotation.eulerAngles.x <= 90.9) 
+		         || (transform.rotation.eulerAngles.x >= 269.9 && transform.rotation.eulerAngles.x <= 270.9))
 			plane = 'Z';
-		//else{
-		//		add in code to keep the player fixed to the gamepad when it is on a rotating platform
-		//}
+
 
 		if (Time.time - lastMove > 0.1f) {
 			// Player 1
@@ -84,11 +105,20 @@ public class PlayerControl : MonoBehaviour {
 		Vector3 newPos;
 
 		if (plane == 'X') {
-			newPos = new Vector3 (curPad.transform.position.x + 0.5f, curPad.transform.position.y, curPad.transform.position.z);
+			if((transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9))
+				newPos = new Vector3 (curPad.transform.position.x - 0.5f, curPad.transform.position.y, curPad.transform.position.z);
+			else
+				newPos = new Vector3 (curPad.transform.position.x + 0.5f, curPad.transform.position.y, curPad.transform.position.z);
 		} else if (plane == 'Y') {
-			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
+			if((transform.rotation.eulerAngles.z >= 179.9 && transform.rotation.eulerAngles.z <= 180.9))
+				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y - 0.5f, curPad.transform.position.z);
+			else
+				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
 		} else{
-			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z + 0.5f);
+			if((transform.rotation.eulerAngles.x >= 89.9 && transform.rotation.eulerAngles.x <= 90.9))
+				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z + 0.5f);
+			else
+				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z - 0.5f);
 		}
 		if (!distanceSet) {
 			distanceSet = true;
