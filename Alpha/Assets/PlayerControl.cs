@@ -33,25 +33,11 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-//		print ("plane: " + plane);
+		print ("plane: " + plane);
 //		print ("Rotz: " + transform.rotation.eulerAngles.z);
 
-		//Set player's rotation to rotation of pad
-		if (plane == 'X') {
-			float temp = transform.rotation.eulerAngles.x;
-//			transform.rotation = curPad.transform.parent.transform.rotation;
-			transform.localEulerAngles = new Vector3 (0f, curPad.transform.parent.transform.rotation.eulerAngles.y, curPad.transform.parent.transform.rotation.eulerAngles.z);
-		} else if (plane == 'Y') {
-			float temp = transform.rotation.y;
-//			transform.rotation = curPad.transform.parent.transform.rotation;
-			transform.localEulerAngles = new Vector3(curPad.transform.parent.transform.rotation.eulerAngles.x, 0f, curPad.transform.parent.transform.rotation.eulerAngles.z);
-		} else {
-			float temp = transform.rotation.z;
-//			transform.rotation = curPad.transform.parent.transform.rotation;
-			transform.localEulerAngles = new Vector3(curPad.transform.parent.transform.rotation.eulerAngles.x, curPad.transform.parent.transform.rotation.eulerAngles.y, 0f);
-		}
-
-		if ((transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9) 
+		if (((transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9) && 
+		     (transform.rotation.eulerAngles.x == 0))
 		    || (transform.rotation.eulerAngles.z >= 269.9 && transform.rotation.eulerAngles.z <= 270.9)
 			|| ((transform.rotation.eulerAngles.z >= 269.9 && transform.rotation.eulerAngles.z <= 270.9)
 			    && (transform.rotation.eulerAngles.y >= 89.9 && transform.rotation.eulerAngles.z <= 90.9)))
@@ -62,6 +48,33 @@ public class PlayerControl : MonoBehaviour {
 		else if ((transform.rotation.eulerAngles.x >= 89.9 && transform.rotation.eulerAngles.x <= 90.9) 
 		         || (transform.rotation.eulerAngles.x >= 269.9 && transform.rotation.eulerAngles.x <= 270.9))
 			plane = 'Z';
+
+
+//		//Set player's rotation to rotation of pad
+		if (plane == 'X') {
+			float temp = transform.rotation.eulerAngles.x;
+			//			transform.rotation = curPad.transform.parent.transform.rotation;
+			transform.localEulerAngles = new Vector3 (0f, curPad.transform.parent.transform.rotation.eulerAngles.y + 
+			                                          curPad.transform.localEulerAngles.y, 
+			                                          curPad.transform.parent.transform.rotation.eulerAngles.z +
+			                                          curPad.transform.localEulerAngles.z);
+		} else if (plane == 'Y') {
+			float temp = transform.rotation.y;
+			//			transform.rotation = curPad.transform.parent.transform.rotation;
+			transform.localEulerAngles = new Vector3(curPad.transform.parent.transform.rotation.eulerAngles.x + 
+			                                         curPad.transform.localEulerAngles.x, 0f, 
+			                                         curPad.transform.parent.transform.rotation.eulerAngles.z + 
+			                                         curPad.transform.localEulerAngles.z);
+		} else {
+			float temp = transform.rotation.z;
+			//			transform.rotation = curPad.transform.parent.transform.rotation;
+			transform.localEulerAngles = new Vector3(curPad.transform.parent.transform.rotation.eulerAngles.x +
+			                                         curPad.transform.localEulerAngles.x, 
+			                                         curPad.transform.parent.transform.rotation.eulerAngles.y +
+			                                         curPad.transform.localEulerAngles.y, 0f);
+		}
+
+//		transform.eulerAngles = curPad.transform.parent.transform.eulerAngles + curPad.transform.localEulerAngles;
 
 
 		if (Time.time - lastMove > 0.1f) {
@@ -105,7 +118,8 @@ public class PlayerControl : MonoBehaviour {
 		Vector3 newPos;
 
 		if (plane == 'X') {
-			if((transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9))
+			if((transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9) && 
+			   (transform.rotation.eulerAngles.x == 0))
 				newPos = new Vector3 (curPad.transform.position.x - 0.5f, curPad.transform.position.y, curPad.transform.position.z);
 			else
 				newPos = new Vector3 (curPad.transform.position.x + 0.5f, curPad.transform.position.y, curPad.transform.position.z);
@@ -115,7 +129,8 @@ public class PlayerControl : MonoBehaviour {
 			else
 				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
 		} else{
-			if((transform.rotation.eulerAngles.x >= 89.9 && transform.rotation.eulerAngles.x <= 90.9))
+			if((transform.rotation.eulerAngles.x >= 89.9 && transform.rotation.eulerAngles.x <= 90.9) && 
+				   (transform.rotation.eulerAngles.z >= 89.9 && transform.rotation.eulerAngles.z <= 90.9))
 				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z + 0.5f);
 			else
 				newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z - 0.5f);
@@ -123,7 +138,7 @@ public class PlayerControl : MonoBehaviour {
 		if (!distanceSet) {
 			distanceSet = true;
 			journeyDistance = Vector3.Distance(transform.position, newPos);
-			print (journeyDistance);
+//			print (journeyDistance);
 		}
 
 		float fracJourney = Time.deltaTime * smooth / journeyDistance;

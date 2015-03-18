@@ -26,7 +26,7 @@ public class LinearPlatform : MonoBehaviour {
 
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
 		toRot = transform.rotation;
 		if (rotationAxis == Axis.x) {
 			angle = transform.eulerAngles.x;
@@ -46,11 +46,11 @@ public class LinearPlatform : MonoBehaviour {
 
 	Quaternion DoRotation () {
 		if (rotationAxis == Axis.x) {
-			toRot = Quaternion.Euler (angle, 0f, 0f);
+			toRot = Quaternion.Euler (angle, transform.eulerAngles.y, transform.eulerAngles.z);
 		} else if (rotationAxis == Axis.y) {
-			toRot = Quaternion.Euler (0f, angle, 0f);
+			toRot = Quaternion.Euler (transform.eulerAngles.x, angle, transform.eulerAngles.z);
 		} else if (rotationAxis == Axis.z) {
-			toRot = Quaternion.Euler (0f, 0f, angle);
+			toRot = Quaternion.Euler (transform.eulerAngles.x, transform.eulerAngles.y, angle);
 		}
 		return Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotspeed);
 	}
