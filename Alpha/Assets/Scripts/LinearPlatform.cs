@@ -17,6 +17,8 @@ public class LinearPlatform : MonoBehaviour {
 	public float movspeed = 10f;
 	
 	Quaternion toRot = Quaternion.identity;
+	Vector3 orig_rot;
+	int num_rotations = 1;
 	
 	// Gizmos
 	void OnDrawGizmos() {
@@ -28,6 +30,7 @@ public class LinearPlatform : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
 		toRot = transform.rotation;
+		orig_rot = transform.eulerAngles;
 		if (rotationAxis == Axis.x) {
 			angle = transform.eulerAngles.x;
 		} else if (rotationAxis == Axis.y) {
@@ -46,17 +49,23 @@ public class LinearPlatform : MonoBehaviour {
 
 	Quaternion DoRotation () {
 		if (rotationAxis == Axis.x) {
-			toRot = Quaternion.Euler (angle, transform.eulerAngles.y, transform.eulerAngles.z);
+			toRot = Quaternion.Euler (angle, orig_rot.y, orig_rot.z);
 		} else if (rotationAxis == Axis.y) {
-			toRot = Quaternion.Euler (transform.eulerAngles.x, angle, transform.eulerAngles.z);
+			toRot = Quaternion.Euler (orig_rot.x, angle, orig_rot.z);
 		} else if (rotationAxis == Axis.z) {
-			toRot = Quaternion.Euler (transform.eulerAngles.x, transform.eulerAngles.y, angle);
+			toRot = Quaternion.Euler (orig_rot.x, orig_rot.y, angle);
 		}
 		return Quaternion.RotateTowards(transform.rotation, toRot, Time.deltaTime * rotspeed);
 	}
 
 	public void Rotate() {
 		angle += 90f;
+//		angle = 90f * num_rotations;
+//		num_rotations++;
+//		if (num_rotations == 5) {
+//			transform.eulerAngles = orig_rot;
+//			num_rotations = 1;
+//		}
 	}
 
 	Vector3 DoMove () {
