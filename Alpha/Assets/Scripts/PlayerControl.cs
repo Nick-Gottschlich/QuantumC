@@ -2,32 +2,33 @@ using UnityEngine;
 using System.Collections;
 
 public class PlayerControl : MonoBehaviour {
-
+	
 	// Variable to determine which player
 	public bool 			player1or2;
 	public int				playerNum = 1;
-
+	
 	public GameObject		up;
 	public GameObject		down;
 	public GameObject		left;
 	public GameObject		right;
-
+	
 	public float 			smooth = 10f;
 	public Pad				curPad;
 	float 					journeyDistance = 0f;
 	bool 					distanceSet = false;
-
+	bool 					feedbackMovement = false;
+	
 	public PlayerControl	carrying;
 	public PlayerControl	carriedBy;
-
+	
 	Pad 					head;
-
+	
 	float lastMove = 0f;
-
+	
 	public char plane = 'Y';
-
+	
 	Quaternion platform_last;
-
+	
 	// Use this for initialization
 	void Start () {
 		head = transform.FindChild("Pad").GetComponent<Pad>();
@@ -39,7 +40,7 @@ public class PlayerControl : MonoBehaviour {
 			// Player 1
 			float xdirection = Input.GetAxisRaw("Horizontal" + playerNum);
 			float zdirection = Input.GetAxisRaw ("Vertical" + playerNum);
-
+			
 			float teleMod = 1f;
 			// Handle Up
 			if (zdirection > 0) {
@@ -71,21 +72,23 @@ public class PlayerControl : MonoBehaviour {
 					StandardMovement(right);
 				}
 			}
+			
+			feedbackMovement = false;
 		}
-
+		
 		Vector3 newPos;
 		newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
-
+		
 		if (!distanceSet) {
 			distanceSet = true;
 			journeyDistance = Vector3.Distance(transform.position, newPos);
-//			print (journeyDistance);
+			//			print (journeyDistance);
 		}
-
+		
 		float fracJourney = Time.deltaTime * smooth / journeyDistance;
 		transform.position = Vector3.Lerp (transform.position, newPos, fracJourney);
 	}
-
+	
 	void StandardMovement(GameObject searchPos) {
 		lastMove = Time.time;
 		Vector3 startPos = searchPos.transform.position;
@@ -118,9 +121,39 @@ public class PlayerControl : MonoBehaviour {
 				if (hitPad.collider.GetComponentInParent<Pad>().isSlope || carriedBy)
 					MoveToPad (hitPad.collider.GetComponentInParent<Pad>());
 			}
+			//give some feedback to player to show they can't move that direction
+			if (searchPos == up && !feedbackMovement) {
+				//slight movement in positive x direction
+				Vector3 hold = transform.position;
+				hold.x += .5f;
+				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				feedbackMovement = true;
+			}
+			if (searchPos == down && !feedbackMovement) {
+				//slight movement in positive x direction
+				Vector3 hold = transform.position;
+				hold.x -= .5f;
+				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				feedbackMovement = true;
+			}
+			if (searchPos == left && !feedbackMovement) {
+				//slight movement in positive x direction
+				Vector3 hold = transform.position;
+				hold.z += .75f;
+				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				feedbackMovement = true;
+			}
+			if (searchPos == right && !feedbackMovement) {
+				//slight movement in positive x direction
+				Vector3 hold = transform.position;
+				hold.z -= .75f;
+				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				feedbackMovement = true;
+			}
+			
 		}
 	}
-
+	
 	void TeleportMovement(Pad teleportPad, float xMod, float zMod) {
 		curPad = teleportPad;
 		Vector3 newPos = curPad.transform.position;
@@ -135,7 +168,7 @@ public class PlayerControl : MonoBehaviour {
 		newPos.z += zMod;
 		transform.position = newPos;
 	}
-
+	
 	void MoveToPad (Pad pad) {
 		if (pad) {
 			curPad = pad;
@@ -146,14 +179,14 @@ public class PlayerControl : MonoBehaviour {
 			distanceSet = false;
 		}
 	}
-
+	
 	void Mount(Collider c) {
 		PlayerControl player = c.GetComponent<PlayerControl>();
 		player.carrying = this;
 		carriedBy = player;
 		curPad = player.head;
 	}
-
+	
 	void changePlane(int p){
 		if (p == 0)
 			plane = 'X';
