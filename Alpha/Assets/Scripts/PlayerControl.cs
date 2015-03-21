@@ -17,6 +17,7 @@ public class PlayerControl : MonoBehaviour {
 	float 					journeyDistance = 0f;
 	bool 					distanceSet = false;
 	bool 					feedbackMovement = false;
+	float					timeSinceFeedback = 0f;
 	
 	public PlayerControl	carrying;
 	public PlayerControl	carriedBy;
@@ -36,6 +37,12 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (Time.time - timeSinceFeedback > .5f) {
+			print (timeSinceFeedback);
+			print (Time.time);
+			feedbackMovement = false;
+		}
+	
 		if (Time.time - lastMove > 0.1f) {
 			// Player 1
 			float xdirection = Input.GetAxisRaw("Horizontal" + playerNum);
@@ -72,8 +79,6 @@ public class PlayerControl : MonoBehaviour {
 					StandardMovement(right);
 				}
 			}
-			
-			feedbackMovement = false;
 		}
 		
 		Vector3 newPos;
@@ -125,30 +130,34 @@ public class PlayerControl : MonoBehaviour {
 			if (searchPos == up && !feedbackMovement) {
 				//slight movement in positive x direction
 				Vector3 hold = transform.position;
-				hold.x += .5f;
-				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				hold.x += .75f;
+				transform.position = Vector3.Lerp (transform.position, hold, .8f);
 				feedbackMovement = true;
+				timeSinceFeedback = Time.time;
 			}
 			if (searchPos == down && !feedbackMovement) {
-				//slight movement in positive x direction
+				//slight movement in negative x direction
 				Vector3 hold = transform.position;
-				hold.x -= .5f;
-				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				hold.x -= .75f;
+				transform.position = Vector3.Lerp (transform.position, hold, .8f);
 				feedbackMovement = true;
+				timeSinceFeedback = Time.time;
 			}
 			if (searchPos == left && !feedbackMovement) {
-				//slight movement in positive x direction
+				//slight movement in positive z direction
 				Vector3 hold = transform.position;
 				hold.z += .75f;
-				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				transform.position = Vector3.Lerp (transform.position, hold, .8f);
 				feedbackMovement = true;
+				timeSinceFeedback = Time.time;
 			}
 			if (searchPos == right && !feedbackMovement) {
-				//slight movement in positive x direction
+				//slight movement in negative z direction
 				Vector3 hold = transform.position;
 				hold.z -= .75f;
-				transform.position = Vector3.Lerp (transform.position, hold, .75f);
+				transform.position = Vector3.Lerp (transform.position, hold, .8f);
 				feedbackMovement = true;
+				timeSinceFeedback = Time.time;
 			}
 			
 		}
