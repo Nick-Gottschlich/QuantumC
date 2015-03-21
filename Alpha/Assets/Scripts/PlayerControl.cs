@@ -65,14 +65,14 @@ public class PlayerControl : MonoBehaviour {
 			}
 			if (xdirection < 0) {
 				if (curPad.teleportOnLeft) {
-					TeleportMovement(curPad.teleportOnLeft, -teleMod, 0f);
+					TeleportMovement(curPad.teleportOnLeft, 0f, -teleMod);
 				} else {
 					StandardMovement(left);
 				}
 			}
 			if (xdirection > 0) {
 				if (curPad.teleportOnRight) {
-					TeleportMovement(curPad.teleportOnRight, teleMod, 0f);
+					TeleportMovement(curPad.teleportOnRight, 0f, teleMod);
 				} else {
 					StandardMovement(right);
 				}
