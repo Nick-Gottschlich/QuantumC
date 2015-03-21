@@ -38,8 +38,6 @@ public class PlayerControl : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Time.time - timeSinceFeedback > .5f) {
-			print (timeSinceFeedback);
-			print (Time.time);
 			feedbackMovement = false;
 		}
 	
