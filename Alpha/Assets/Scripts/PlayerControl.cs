@@ -1,19 +1,21 @@
 using UnityEngine;
 using System.Collections;
 
+public enum Direction { UP, DOWN, LEFT, RIGHT };
+
 public class PlayerControl : MonoBehaviour {
 	
 	// Variable to determine which player
-	public bool 			player1or2;
 	public int				playerNum = 1;
 	
-	public GameObject		up;
-	public GameObject		down;
-	public GameObject		left;
-	public GameObject		right;
+	GameObject				up;
+	GameObject				down;
+	GameObject				left;
+	GameObject				right;
 	
 	public float 			smooth = 10f;
-	public Pad				curPad;
+	public Pad				startPad;
+	Pad						curPad;
 	float 					journeyDistance = 0f;
 	bool 					distanceSet = false;
 	bool 					feedbackMovement = false;
@@ -21,18 +23,25 @@ public class PlayerControl : MonoBehaviour {
 	
 	public PlayerControl	carrying;
 	public PlayerControl	carriedBy;
+
+	Direction				lastMoveDir;
 	
 	Pad 					head;
 	
 	float lastMove = 0f;
-	
-	public char plane = 'Y';
 	
 	Quaternion platform_last;
 	
 	// Use this for initialization
 	void Start () {
 		head = transform.FindChild("Pad").GetComponent<Pad>();
+
+		up = transform.FindChild("Front").gameObject;
+		down = transform.FindChild("Back").gameObject;
+		left = transform.FindChild("Left").gameObject;
+		right = transform.FindChild("Right").gameObject;
+
+		curPad = startPad;
 	}
 	
 	// Update is called once per frame
@@ -40,7 +49,7 @@ public class PlayerControl : MonoBehaviour {
 		if (Time.time - timeSinceFeedback > .5f) {
 			feedbackMovement = false;
 		}
-	
+
 		if (Time.time - lastMove > 0.1f) {
 			// Player 1
 			float xdirection = Input.GetAxisRaw("Horizontal" + playerNum);
@@ -49,6 +58,7 @@ public class PlayerControl : MonoBehaviour {
 			float teleMod = 1f;
 			// Handle Up
 			if (zdirection > 0) {
+				lastMoveDir = Direction.UP;
 				if (curPad.teleportOnUp) {
 					TeleportMovement(curPad.teleportOnUp, -teleMod, 0f);
 				} else {
@@ -57,6 +67,7 @@ public class PlayerControl : MonoBehaviour {
 			}
 			// Handle Down
 			if (zdirection < 0) {
+				lastMoveDir = Direction.DOWN;
 				if (curPad.teleportOnDown) {
 					TeleportMovement(curPad.teleportOnDown, teleMod, 0f);
 				} else {
@@ -64,6 +75,7 @@ public class PlayerControl : MonoBehaviour {
 				}
 			}
 			if (xdirection < 0) {
+				lastMoveDir = Direction.LEFT;
 				if (curPad.teleportOnLeft) {
 					TeleportMovement(curPad.teleportOnLeft, 0f, -teleMod);
 				} else {
@@ -71,6 +83,7 @@ public class PlayerControl : MonoBehaviour {
 				}
 			}
 			if (xdirection > 0) {
+				lastMoveDir = Direction.RIGHT;
 				if (curPad.teleportOnRight) {
 					TeleportMovement(curPad.teleportOnRight, 0f, teleMod);
 				} else {
@@ -94,36 +107,38 @@ public class PlayerControl : MonoBehaviour {
 	
 	void StandardMovement(GameObject searchPos) {
 		lastMove = Time.time;
+		Pad pad = null;
+
 		Vector3 startPos = searchPos.transform.position;
 		Collider[] hits = Physics.OverlapSphere(startPos, 0.4f);
 		if (hits.Length > 0) {
-			Pad pad = null;
-			bool hasPlayer = false;
 			foreach (Collider c in hits) {
-				if (c.CompareTag("Player")) {
-					Mount(c);
-					hasPlayer = true;
-				} else if (c.CompareTag("Pad")) {
+				if (c.CompareTag("Pad")) {
 					pad = c.GetComponentInParent<Pad>();
 				}
 			}
-			if (!hasPlayer && pad) {
-				curPad = pad;
-				if (carriedBy) {
-					carriedBy.carrying = null;
-					carriedBy = null;
-				}
-				distanceSet = false;
-			}
 		} else {
 			RaycastHit hitPad;
-			if (Physics.Raycast(searchPos.transform.position, Vector3.up, out hitPad, 3f)) {
-				if (hitPad.collider.GetComponentInParent<Pad>().isSlope || carriedBy)
-					MoveToPad (hitPad.collider.GetComponentInParent<Pad>());
-			} else if (Physics.Raycast(searchPos.transform.position, Vector3.down, out hitPad, 3f)) {
-				if (hitPad.collider.GetComponentInParent<Pad>().isSlope || carriedBy)
-					MoveToPad (hitPad.collider.GetComponentInParent<Pad>());
+			if (Physics.Raycast(searchPos.transform.position, Vector3.up, out hitPad, 1f)) {
+				if (hitPad.collider.GetComponentInParent<Pad>().isSlope || carriedBy) {
+					pad = hitPad.collider.GetComponentInParent<Pad>();
+				}
+			} else if (Physics.Raycast(searchPos.transform.position, Vector3.down, out hitPad, 1f)) {
+				if (hitPad.collider.GetComponentInParent<Pad>() || carriedBy) {
+					pad = hitPad.collider.GetComponentInParent<Pad>();
+				}
 			}
+		}
+
+		if (pad) {
+			if(pad.IsEmpty()){
+				MoveToPad(pad);
+			} else if (pad.heldObject.CompareTag("Player")) {
+				Mount(pad.heldObject.GetComponent<PlayerControl>());
+			} else if (pad.heldObject.CompareTag("MoveableBlock")) {
+				Push(pad);
+			}
+		} else {
 			//give some feedback to player to show they can't move that direction
 			if (searchPos == up && !feedbackMovement) {
 				//slight movement in positive x direction
@@ -157,49 +172,40 @@ public class PlayerControl : MonoBehaviour {
 				feedbackMovement = true;
 				timeSinceFeedback = Time.time;
 			}
-			
 		}
 	}
 	
 	void TeleportMovement(Pad teleportPad, float xMod, float zMod) {
 		curPad = teleportPad;
 		Vector3 newPos = curPad.transform.position;
-		if (plane == 'X') {
-			newPos = new Vector3 (curPad.transform.position.x + 0.5f, curPad.transform.position.y, curPad.transform.position.z);
-		} else if (plane == 'Y') {
-			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
-		} else{
-			newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y, curPad.transform.position.z + 0.5f);
-		}
 		newPos.x += xMod;
 		newPos.z += zMod;
 		transform.position = newPos;
 	}
 	
 	void MoveToPad (Pad pad) {
-		if (pad) {
-			curPad = pad;
-			if (carriedBy) {
-				carriedBy.carrying = null;
-				carriedBy = null;
-			}
-			distanceSet = false;
+		curPad = pad;
+		if (carriedBy) {
+			carriedBy.carrying = null;
+			carriedBy = null;
 		}
+		distanceSet = false;
 	}
 	
-	void Mount(Collider c) {
-		PlayerControl player = c.GetComponent<PlayerControl>();
+	void Mount(PlayerControl player) {
 		player.carrying = this;
 		carriedBy = player;
 		curPad = player.head;
 	}
 	
-	void changePlane(int p){
-		if (p == 0)
-			plane = 'X';
-		else if (p == 1)
-			plane = 'Y';
-		else if (p == 2)
-			plane = 'Z';
+	void Push (Pad pad) {
+		MoveableBlock block = pad.heldObject.GetComponent<MoveableBlock>();
+		if (block.Push(lastMoveDir)) {
+			MoveToPad(pad);
+		}
+	}
+
+	public void Killed() {
+		curPad = startPad;
 	}
 }

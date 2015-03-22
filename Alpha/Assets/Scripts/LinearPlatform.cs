@@ -18,7 +18,6 @@ public class LinearPlatform : MonoBehaviour {
 	
 	Quaternion toRot = Quaternion.identity;
 	Vector3 orig_rot;
-	int num_rotations = 1;
 	
 	// Gizmos
 	void OnDrawGizmos() {

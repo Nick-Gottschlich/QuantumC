@@ -136,7 +136,7 @@ public class EnemyControl : MonoBehaviour {
 							pad = c.GetComponentInParent<Pad>();
 						}
 						else if (c.CompareTag("Player")) {
-							Application.LoadLevel(Application.loadedLevel);
+							c.GetComponent<PlayerControl>().Killed();
 						}
 					}
 					if (!hasPlayer && pad) {
