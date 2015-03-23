@@ -134,7 +134,9 @@ public class PlayerControl : MonoBehaviour {
 			if(pad.IsEmpty()){
 				MoveToPad(pad);
 			} else if (pad.heldObject.CompareTag("Player")) {
-				Mount(pad.heldObject.GetComponent<PlayerControl>());
+				if (pad.heldObject.GetComponent<PlayerControl>().playerNum != playerNum) {
+					Mount(pad.heldObject.GetComponent<PlayerControl>());
+				}
 			} else if (pad.heldObject.CompareTag("MoveableBlock")) {
 				Push(pad);
 			}
