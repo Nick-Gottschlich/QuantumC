@@ -32,7 +32,7 @@ public class EnemyControl : MonoBehaviour {
 	//public Pad 				head;
 	
 	float lastMove = 0f;
-	
+
 	// Use this for initialization
 	void Start () {
 		if (enemyDir == 0) {
@@ -164,6 +164,41 @@ public class EnemyControl : MonoBehaviour {
 		else {
 			enemyStopped = false;
 			swap = 0;
+		}
+
+		//Enemy proximity to P1 and P2 detecton
+		GameObject p1 = GameObject.Find ("Player1");
+		GameObject p2 = GameObject.Find ("Player2");
+		float p1Distance = Vector3.Distance (transform.position, p1.transform.position);
+		float p2Distance = Vector3.Distance (transform.position, p2.transform.position);
+
+//		print ("Distance 1: " + p1Distance);
+//		print ("Distance 2: " + p2Distance);
+
+		if (p1Distance <= 7f || p2Distance <= 7f) {
+			//shake camera
+			CameraShake.shake = .25f;
+			CameraShake.shakeAmount = .1f;
+		}
+		else if (p1Distance <= 6f || p2Distance <= 6f) {
+			//shake camera
+			CameraShake.shake = .25f;
+			CameraShake.shakeAmount = .2f;
+		}
+		else if (p1Distance <= 5f || p2Distance <= 5f) {
+			//shake camera
+			CameraShake.shake = .25f;
+			CameraShake.shakeAmount = .3f;
+		}
+		else if (p1Distance <= 4f || p2Distance <= 4f) {
+			//shake camera
+			CameraShake.shake = .25f;
+			CameraShake.shakeAmount = .4f;
+		}
+		else if (p1Distance <= 3f || p2Distance <= 3f) {
+			//shake camera
+			CameraShake.shake = .25f;
+			CameraShake.shakeAmount = .5f;
 		}
 	}
 }
