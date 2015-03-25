@@ -38,20 +38,37 @@ public class LevelSelect : MonoBehaviour {
 				grid.Add (new Vector3 (-27f + x * increment_x, 31.2f - y*increment_y, -26.3f));
 
 		//Initialize the level loading system
-		levels.Add ("_noah_enemy_proximity_demo"); //level (0,0)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (1,0)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (2,0)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (3,0)
-//
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (0,1)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (1,1)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (2,1)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (3,1)
-//
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (0,2)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (1,2)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (2,2)
-//		levels.Add ("_noah_enemy_proximity_demo"); //level (3,2)
+
+		//Tutorials
+		levels.Add ("Nick_Level_2_basictutorial"); //level (0,0)
+		levels.Add ("Nick_Level_4_tutorialforboxandlasers"); //level (1,0)
+		levels.Add ("_Level_Selection"); //level (2,0)
+		levels.Add ("_Level_Selection"); //level (3,0)
+
+		//Actual levels
+		//Row 1 - Nick (for now)
+		levels.Add ("Nick_Level_1_devils_tuning_fork"); //level (0,1)
+		levels.Add ("Nick_Level_3_box_and_laser_level"); //level (1,1)
+		levels.Add ("Nick_Level_5_reflexes"); //level (2,1)
+		levels.Add ("_game_play_custom_level_Jay_4"); //level (3,1)
+
+		//Row 2 - Pratik (for now)
+		levels.Add ("Pratik_Level_1"); //level (0,2)
+//		levels.Add ("_Level_Selection"); //level (1,2)
+//		levels.Add ("_Level_Selection"); //level (2,2)
+//		levels.Add ("_Level_Selection"); //level (3,2)
+
+		//Row 3 - Jay (for now)
+//		levels.Add ("_Level_Selection"); //level (0,3)
+//		levels.Add ("_Level_Selection"); //level (1,3)
+//		levels.Add ("_Level_Selection"); //level (2,3)
+//		levels.Add ("_Level_Selection"); //level (3,3)
+
+		//Row 2 - Noah (for now)
+//		levels.Add ("_Level_Selection"); //level (0,4)
+//		levels.Add ("_Level_Selection"); //level (1,4)
+//		levels.Add ("_Level_Selection"); //level (2,4)
+//		levels.Add ("_Level_Selection"); //level (3,4)
 		
 
 //		foreach (Vector3 pos in grid) {
@@ -132,7 +149,7 @@ public class LevelSelect : MonoBehaviour {
 
 	void LoadLevel(int x, int y){
 		print ("load!");
-//		Application.LoadLevel (levels [x + y * 4]);
+		Application.LoadLevel (levels [x + y * 4]);
 	}
 
 	void MoveScreen(){

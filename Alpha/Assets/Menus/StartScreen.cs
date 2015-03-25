@@ -19,8 +19,7 @@ public class StartScreen : MonoBehaviour {
 				Application.LoadLevel ("_Level_Selection");
 		}
 		else if (Application.loadedLevelName == "_Level_Selection"){
-			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
-
+			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
 
 			if(Input.GetKeyUp (KeyCode.I))
 				Application.LoadLevel ("_Instructions");
@@ -28,14 +27,15 @@ public class StartScreen : MonoBehaviour {
 				Application.LoadLevel ("_Objective");
 		}
 		else if (Application.loadedLevelName == "_Instructions"){
-//			light.transform.rotation = Quaternion.Euler(new Vector3(51.84637f, 2.026001f, 2.575775f));
-			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
+			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
+//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
 
 			if (Input.GetKeyUp (KeyCode.I) || Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.Escape))
 				Application.LoadLevel ("_Level_Selection");
 		}
 		else if (Application.loadedLevelName == "_Objective"){
-			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
+			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
+//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
 
 			if (Input.GetKeyUp (KeyCode.O) || Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.Escape))
 				Application.LoadLevel ("_Level_Selection");

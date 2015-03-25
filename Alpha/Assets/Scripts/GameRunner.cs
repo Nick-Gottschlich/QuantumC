@@ -23,6 +23,9 @@ public class GameRunner : MonoBehaviour {
 	void Update () {
 		if (P1colGoal && P2colGoal) {
 			winText.text = "You Win!";
+
+			if(Input.GetKeyUp(KeyCode.Return))
+				Application.LoadLevel("_Level_Selection");
 		}
 	}
 }
