@@ -86,18 +86,24 @@ public class LinearPlatform : MonoBehaviour {
 
 		Vector3 dest = posOrNeg ? finalPos : startPos;
 		if (Vector3.Distance (transform.position, dest) > 0.2f) {
-			if (moveAxis == Axis.z && posOrNeg) {
-				return transform.position + Vector3.forward * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.z && !posOrNeg) {
-				return transform.position + Vector3.back * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.y && posOrNeg) {
-				return transform.position + Vector3.up * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.y && !posOrNeg) {
-				return transform.position + Vector3.down * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.x && posOrNeg) {
-				return transform.position + Vector3.left * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.x && !posOrNeg) {
-				return transform.position + Vector3.right * Time.deltaTime * movspeed;
+			if (moveAxis == Axis.z) {
+				if (transform.position.z > dest.z) {
+					return transform.position + Vector3.back * Time.deltaTime * movspeed;
+				} else {
+					return transform.position + Vector3.forward * Time.deltaTime * movspeed;
+				}
+			} else if (moveAxis == Axis.y) {
+				if (transform.position.y > dest.y) {
+					return transform.position + Vector3.down * Time.deltaTime * movspeed;
+				} else {
+					return transform.position + Vector3.up * Time.deltaTime * movspeed;
+				}
+			} else if (moveAxis == Axis.x) {
+				if (transform.position.x > dest.x) {
+					return transform.position + Vector3.left * Time.deltaTime * movspeed;
+				} else {
+					return transform.position + Vector3.right * Time.deltaTime * movspeed;
+				}
 			}
 		}
 		return dest;

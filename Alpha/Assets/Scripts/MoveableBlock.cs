@@ -60,6 +60,7 @@ public class MoveableBlock : MonoBehaviour {
 				TeleportMovement(curPad.teleportOnLeft, 0f, -teleMod);
 				return true;
 			} else {
+				print ("trying to move left");
 				return StandardMovement(left);
 			}
 		} else {
@@ -76,6 +77,8 @@ public class MoveableBlock : MonoBehaviour {
 		Vector3 startPos = searchPos.transform.position;
 		Collider[] hits = Physics.OverlapSphere(startPos, 0.4f);
 		Pad pad = null;
+		print (hits.Length);
+		print (searchPos.name);
 		if (hits.Length > 0) {
 			foreach (Collider c in hits) {
 				if (c.CompareTag("Pad")) {
@@ -99,6 +102,7 @@ public class MoveableBlock : MonoBehaviour {
 			MoveToPad(pad);
 			return true;
 		}
+		print ("didn't find jack");
 		return false;
 	}
 	

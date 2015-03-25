@@ -200,7 +200,10 @@ public class PlayerControl : MonoBehaviour {
 	void Push (Pad pad) {
 		MoveableBlock block = pad.heldObject.GetComponent<MoveableBlock>();
 		if (block.Push(lastMoveDir)) {
+			print ("pushed");
 			MoveToPad(pad);
+		} else {
+			print ("could not push");
 		}
 	}
 
