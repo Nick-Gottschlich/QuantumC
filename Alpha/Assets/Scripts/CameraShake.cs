@@ -16,7 +16,7 @@ public class CameraShake : MonoBehaviour
 	public static float shakeAmount = 0.7f;
 	public float decreaseFactor = 1.0f;
 
-	public static bool shaking = false;
+	public bool shaking = false;
 	
 	Vector3 originalPos;
 	
@@ -47,7 +47,8 @@ public class CameraShake : MonoBehaviour
 		else
 		{
 			shake = 0f;
-			camTransform.localPosition = originalPos;
+//			camTransform.localPosition = originalPos;
+			originalPos = camTransform.localPosition;
 		}
 	}
 }

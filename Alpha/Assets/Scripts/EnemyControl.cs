@@ -176,27 +176,22 @@ public class EnemyControl : MonoBehaviour {
 //		print ("Distance 2: " + p2Distance);
 
 		if (p1Distance <= 7f || p2Distance <= 7f) {
-			//shake camera
 			CameraShake.shake = .25f;
 			CameraShake.shakeAmount = .1f;
 		}
 		else if (p1Distance <= 6f || p2Distance <= 6f) {
-			//shake camera
 			CameraShake.shake = .25f;
 			CameraShake.shakeAmount = .2f;
 		}
 		else if (p1Distance <= 5f || p2Distance <= 5f) {
-			//shake camera
 			CameraShake.shake = .25f;
 			CameraShake.shakeAmount = .3f;
 		}
 		else if (p1Distance <= 4f || p2Distance <= 4f) {
-			//shake camera
 			CameraShake.shake = .25f;
 			CameraShake.shakeAmount = .4f;
 		}
 		else if (p1Distance <= 3f || p2Distance <= 3f) {
-			//shake camera
 			CameraShake.shake = .25f;
 			CameraShake.shakeAmount = .5f;
 		}
