@@ -7,10 +7,12 @@ public class LinearPlatform : MonoBehaviour {
 
 	bool posOrNeg = false;
 
+	public bool	infiniteSpin = false;
 	public Axis rotationAxis;
 	public float rotspeed = 50f;
 	float angle = 0f;
 
+	public bool infiniteMove = false;
 	public Axis moveAxis;
 	Vector3 startPos;
 	public Vector3 finalPos;
@@ -42,6 +44,19 @@ public class LinearPlatform : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if (infiniteMove) {
+			Vector3 dest = posOrNeg ? finalPos : startPos;
+			if (transform.position == dest) {
+				Move ();
+			}
+		}
+
+		if (infiniteSpin) {
+			if (toRot == transform.rotation) {
+				Rotate ();
+			}
+		}
+
 		transform.rotation = DoRotation ();
 		transform.position = DoMove ();
 	}
@@ -70,17 +85,17 @@ public class LinearPlatform : MonoBehaviour {
 	Vector3 DoMove () {
 		Vector3 dest = posOrNeg ? finalPos : startPos;
 		if (Vector3.Distance (transform.position, dest) > 0.2f) {
-			if (moveAxis == Axis.x && posOrNeg) {
+			if (moveAxis == Axis.z && posOrNeg) {
 				return transform.position + Vector3.forward * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.x && !posOrNeg) {
+			} else if (moveAxis == Axis.z && !posOrNeg) {
 				return transform.position + Vector3.back * Time.deltaTime * movspeed;
 			} else if (moveAxis == Axis.y && posOrNeg) {
 				return transform.position + Vector3.up * Time.deltaTime * movspeed;
 			} else if (moveAxis == Axis.y && !posOrNeg) {
 				return transform.position + Vector3.down * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.z && posOrNeg) {
+			} else if (moveAxis == Axis.x && posOrNeg) {
 				return transform.position + Vector3.left * Time.deltaTime * movspeed;
-			} else if (moveAxis == Axis.z && !posOrNeg) {
+			} else if (moveAxis == Axis.x && !posOrNeg) {
 				return transform.position + Vector3.right * Time.deltaTime * movspeed;
 			}
 		}

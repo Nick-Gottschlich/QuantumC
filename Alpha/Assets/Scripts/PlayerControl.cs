@@ -58,6 +58,7 @@ public class PlayerControl : MonoBehaviour {
 			float teleMod = 1f;
 			// Handle Up
 			if (zdirection > 0) {
+				lastMove = Time.time;
 				lastMoveDir = Direction.UP;
 				if (curPad.teleportOnUp) {
 					TeleportMovement(curPad.teleportOnUp, -teleMod, 0f);
@@ -67,6 +68,7 @@ public class PlayerControl : MonoBehaviour {
 			}
 			// Handle Down
 			if (zdirection < 0) {
+				lastMove = Time.time;
 				lastMoveDir = Direction.DOWN;
 				if (curPad.teleportOnDown) {
 					TeleportMovement(curPad.teleportOnDown, teleMod, 0f);
@@ -75,6 +77,7 @@ public class PlayerControl : MonoBehaviour {
 				}
 			}
 			if (xdirection < 0) {
+				lastMove = Time.time;
 				lastMoveDir = Direction.LEFT;
 				if (curPad.teleportOnLeft) {
 					TeleportMovement(curPad.teleportOnLeft, 0f, -teleMod);
@@ -83,6 +86,7 @@ public class PlayerControl : MonoBehaviour {
 				}
 			}
 			if (xdirection > 0) {
+				lastMove = Time.time;
 				lastMoveDir = Direction.RIGHT;
 				if (curPad.teleportOnRight) {
 					TeleportMovement(curPad.teleportOnRight, 0f, teleMod);
@@ -94,19 +98,11 @@ public class PlayerControl : MonoBehaviour {
 		
 		Vector3 newPos;
 		newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
-		
-		if (!distanceSet) {
-			distanceSet = true;
-			journeyDistance = Vector3.Distance(transform.position, newPos);
-			//			print (journeyDistance);
-		}
-		
-		float fracJourney = Time.deltaTime * smooth / journeyDistance;
-		transform.position = Vector3.Lerp (transform.position, newPos, fracJourney);
+
+		transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
 	}
 	
 	void StandardMovement(GameObject searchPos) {
-		lastMove = Time.time;
 		Pad pad = null;
 
 		Vector3 startPos = searchPos.transform.position;
@@ -182,6 +178,7 @@ public class PlayerControl : MonoBehaviour {
 		Vector3 newPos = curPad.transform.position;
 		newPos.x += xMod;
 		newPos.z += zMod;
+		newPos.y += 0.5f;
 		transform.position = newPos;
 	}
 	
