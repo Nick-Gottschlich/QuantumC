@@ -5,7 +5,7 @@ public enum Axis {x, y, z}
 
 public class LinearPlatform : MonoBehaviour {
 
-	bool posOrNeg = false;
+	public bool posOrNeg = false;
 
 	public bool	infiniteSpin = false;
 	public Axis rotationAxis;
@@ -83,6 +83,7 @@ public class LinearPlatform : MonoBehaviour {
 	}
 
 	Vector3 DoMove () {
+
 		Vector3 dest = posOrNeg ? finalPos : startPos;
 		if (Vector3.Distance (transform.position, dest) > 0.2f) {
 			if (moveAxis == Axis.z && posOrNeg) {
@@ -104,5 +105,11 @@ public class LinearPlatform : MonoBehaviour {
 
 	public void Move() {
 		posOrNeg = !posOrNeg;
+	}
+
+	public void MoveOnce(Vector3 input) {
+		startPos = transform.position;
+		finalPos = input;
+		posOrNeg = true;
 	}
 }

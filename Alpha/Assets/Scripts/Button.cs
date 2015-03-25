@@ -1,13 +1,14 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public enum MoveOrRotate {Move, Rotate, Both};
+public enum MoveOrRotate {Move, Rotate, Once, All};
 
 public class Button : MonoBehaviour {
 
 	public LinearPlatform controlObject;
 	public MoveOrRotate moveOrRotate = MoveOrRotate.Rotate;
 	public bool pressed = false;
+	public Vector3 moveOnceLoc;
 
 	// For Debugging purposes
 	void OnGizmosDraw() {
@@ -35,7 +36,10 @@ public class Button : MonoBehaviour {
 				controlObject.Move ();
 			else if (moveOrRotate == MoveOrRotate.Rotate)
 				controlObject.Rotate();
-			else {
+			else if (moveOrRotate == MoveOrRotate.Once) {
+				controlObject.MoveOnce(moveOnceLoc);
+			}
+			else { //All
 				controlObject.Move ();
 				controlObject.Rotate ();
 			}
