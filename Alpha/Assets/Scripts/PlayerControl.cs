@@ -207,6 +207,8 @@ public class PlayerControl : MonoBehaviour {
 		}
 	}
 
+	//minor bug with this: if player keeps holding a direction while transporting back if the player moves over a pad
+	//	on the way back they might move as if they were on this pad
 	public void Killed() {
 		curPad = startPad;
 	}

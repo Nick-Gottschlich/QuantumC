@@ -61,6 +61,12 @@ public class EnemyControl : MonoBehaviour {
 		}
 	}
 	
+	void OnTriggerEnter (Collider c) {
+		if (c.tag == "Player") {
+			c.GetComponent<PlayerControl>().Killed();
+		}
+	}
+	
 	// Update is called once per frame
 	void Update () {
 		//print (swap);
@@ -135,9 +141,10 @@ public class EnemyControl : MonoBehaviour {
 						if (c.CompareTag("Pad")) {
 							pad = c.GetComponentInParent<Pad>();
 						}
-						else if (c.CompareTag("Player")) {
+						//this is checking if the pad is going to hit the player, we need to check the spheres colliding somehow
+						/*else if (c.CompareTag("Player")) {
 							c.GetComponent<PlayerControl>().Killed();
-						}
+						}*/
 					}
 					if (!hasPlayer && pad) {
 						curPad = pad;
