@@ -16,7 +16,7 @@ public class LevelSelect : MonoBehaviour {
 	float increment_x = 6f;
 	float increment_y = 3.9f;
 
-	float smooth = 10f;
+	float smooth = 25f;
 	float journeyDistance = 0f;
 
 	Vector3 newPos;
@@ -24,7 +24,7 @@ public class LevelSelect : MonoBehaviour {
 	
 	float camera_diff_y;
 
-	float shake_start = 2.5f;
+	float shake_start = 1.5f;
 
 	// Use this for initialization
 	void Start () {
