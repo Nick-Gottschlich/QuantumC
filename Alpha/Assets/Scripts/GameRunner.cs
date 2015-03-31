@@ -3,12 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
+//make the death text flash doeeeeeeeeeee
+
 public class GameRunner : MonoBehaviour {
 	static public bool P1colGoal = false;
 	static public bool P2colGoal = false;
 	
 	static bool dead = false;
-	
+
 	public Text winText;
 	public Text pauseText;
 	public static Text deathText;
@@ -33,6 +35,8 @@ public class GameRunner : MonoBehaviour {
 		winText.text = "";
 		pauseText.text = "";
 		deathText.text = "";
+		
+		Time.timeScale = 1;
 	}
 
 	void Awake(){
@@ -47,14 +51,20 @@ public class GameRunner : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		//get rid of or change this in the future
+		//get rid of or change this in the future, maybe have it call a cutscene, and then go to next level?
 		if (P1colGoal && P2colGoal) {
 			winText.text = "You Win!";
+			Time.timeScale = 0;
+		}
 			
-		deathText.text = "";
+		//deathText.text = "";
 
 		//Update levels completed
 		levels_completed[Application.loadedLevelName] = true;
+
+		if(Input.GetKeyUp(KeyCode.Return)) {
+			Application.LoadLevel("_Level_Selection");
+		}
 		
 		//reset level on press of R key
 		if (Input.GetKeyUp (KeyCode.R)) {
@@ -100,6 +110,7 @@ public class GameRunner : MonoBehaviour {
 	public static void killedByEnemy() {
 		Time.timeScale = 0;
 		dead = true;
+
 		deathText.text = "ALL \n SYSTEMS \n CORRUPTED";
 	}
 }
