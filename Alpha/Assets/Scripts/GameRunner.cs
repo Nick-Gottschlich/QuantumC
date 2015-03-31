@@ -85,12 +85,12 @@ public class GameRunner : MonoBehaviour {
 			}	
 		}
 
-		if(Input.GetKeyUp(KeyCode.Return) && !AllLevelsDone()){
+		if(Input.GetKeyUp(KeyCode.Return) && !AllLevelsDone()) {
 				//Load the next level in the sequence
 				LevelSelect.current_level_id++;
 				Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
-			}
-			else if(Input.GetKeyUp(KeyCode.Return) && AllLevelsDone())
+		}
+		else if(Input.GetKeyUp(KeyCode.Return) && AllLevelsDone()) {
 				Application.LoadLevel("_Success");
 		}
 
