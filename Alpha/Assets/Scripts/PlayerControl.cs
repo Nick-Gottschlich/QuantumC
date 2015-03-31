@@ -27,7 +27,6 @@ public class PlayerControl : MonoBehaviour {
 	Pad 					head;
 	
 	float lastMove = 0f;
-	
 	Quaternion platform_last;
 	
 	// Use this for initialization
@@ -44,6 +43,8 @@ public class PlayerControl : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		CheckMyPadForSomeoneElse();
+	
 		if (Time.time - timeSinceFeedback > .5f) {
 			feedbackMovement = false;
 		}
@@ -74,6 +75,7 @@ public class PlayerControl : MonoBehaviour {
 					StandardMovement(down);
 				}
 			}
+			// Handle Left
 			if (xdirection < 0) {
 				lastMove = Time.time;
 				lastMoveDir = Direction.LEFT;
@@ -83,6 +85,7 @@ public class PlayerControl : MonoBehaviour {
 					StandardMovement(left);
 				}
 			}
+			// Handle Right
 			if (xdirection > 0) {
 				lastMove = Time.time;
 				lastMoveDir = Direction.RIGHT;
@@ -98,6 +101,15 @@ public class PlayerControl : MonoBehaviour {
 		newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
 
 		transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
+	}
+
+	void CheckMyPadForSomeoneElse() {
+		if (curPad.IsEmpty()) return;
+		if (Time.time - lastMove < 0.1f) return;
+		PlayerControl p = curPad.heldObject.GetComponent<PlayerControl>();
+		if (p != this) {
+			moveBack ();
+		}
 	}
 	
 	void StandardMovement(GameObject searchPos) {
@@ -128,7 +140,7 @@ public class PlayerControl : MonoBehaviour {
 			if(pad.IsEmpty()){
 				MoveToPad(pad);
 			} else if (pad.heldObject.CompareTag("Player")) {
-				if (pad.heldObject.GetComponent<PlayerControl>().playerNum != playerNum) {
+				if (pad.heldObject.GetComponent<PlayerControl>().playerNum != playerNum && !carrying) {
 					Mount(pad.heldObject.GetComponent<PlayerControl>());
 				}
 			} else if (pad.heldObject.CompareTag("MoveableBlock")) {
@@ -173,12 +185,23 @@ public class PlayerControl : MonoBehaviour {
 	}
 	
 	void TeleportMovement(Pad teleportPad, float xMod, float zMod) {
-		curPad = teleportPad;
-		Vector3 newPos = curPad.transform.position;
+		// Fake a transition to the pad
+		Vector3 newPos = teleportPad.transform.position;
 		newPos.x += xMod;
 		newPos.z += zMod;
 		newPos.y += 0.5f;
 		transform.position = newPos;
+	
+		// Do the standard pad movement stuff
+		if(teleportPad.IsEmpty()){
+			MoveToPad(teleportPad);
+		} else if (teleportPad.heldObject.CompareTag("Player")) {
+			if (teleportPad.heldObject.GetComponent<PlayerControl>().playerNum != playerNum && !carrying) {
+				Mount(teleportPad.heldObject.GetComponent<PlayerControl>());
+			}
+		} else if (teleportPad.heldObject.CompareTag("MoveableBlock")) {
+			Push(teleportPad);
+		}
 	}
 	
 	void MoveToPad (Pad pad) {
@@ -216,17 +239,42 @@ public class PlayerControl : MonoBehaviour {
 	
 	//change this to lastpad instead of lastmovedir
 	public void moveBack() {
-		if (lastMoveDir == Direction.UP) {
-			StandardMovement(down);
-		}
+		float teleMod = 1f;
 		if (lastMoveDir == Direction.DOWN) {
-			StandardMovement(up);
+			lastMove = Time.time;
+			lastMoveDir = Direction.UP;
+			if (curPad.teleportOnUp) {
+				TeleportMovement(curPad.teleportOnUp, -teleMod, 0f);
+			} else {
+				StandardMovement(up);
+			}
 		}
-		if (lastMoveDir == Direction.LEFT) {
-			StandardMovement(right);
+		if (lastMoveDir == Direction.UP) {
+			lastMove = Time.time;
+			lastMoveDir = Direction.DOWN;
+			if (curPad.teleportOnDown) {
+				TeleportMovement(curPad.teleportOnDown, teleMod, 0f);
+			} else {
+				StandardMovement(down);
+			}
 		}
 		if (lastMoveDir == Direction.RIGHT) {
-			StandardMovement(left);
+			lastMove = Time.time;
+			lastMoveDir = Direction.LEFT;
+			if (curPad.teleportOnLeft) {
+				TeleportMovement(curPad.teleportOnLeft, 0f, -teleMod);
+			} else {
+				StandardMovement(left);
+			}
+		}
+		if (lastMoveDir == Direction.LEFT) {
+			lastMove = Time.time;
+			lastMoveDir = Direction.RIGHT;
+			if (curPad.teleportOnRight) {
+				TeleportMovement(curPad.teleportOnRight, 0f, teleMod);
+			} else {
+				StandardMovement(right);
+			}
 		}
 	}
 }
