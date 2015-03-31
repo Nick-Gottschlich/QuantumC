@@ -40,5 +40,12 @@ public class StartScreen : MonoBehaviour {
 			if (Input.GetKeyUp (KeyCode.O) || Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.Escape))
 				Application.LoadLevel ("_Level_Selection");
 		}
+		else if (Application.loadedLevelName == "_Success"){
+			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
+			//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
+			
+			if (Input.GetKeyUp (KeyCode.Return))
+				Application.LoadLevel ("_Start_Screen");
+		}
 	}
 }

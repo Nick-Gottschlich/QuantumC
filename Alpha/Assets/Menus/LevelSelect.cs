@@ -8,13 +8,15 @@ public class LevelSelect : MonoBehaviour {
 	int current_y = 0;
 
 	List<Vector3> grid = new List<Vector3>();
-	List<string> levels = new List<string>();
+	public static List<string> levels = new List<string>();
 
-	int grid_max_x = 4;
-	int grid_max_y = 5;
+	int grid_max_x = 3;
+	int grid_max_y = 3;
 
-	float increment_x = 6f;
-	float increment_y = 3.9f;
+	float increment_x = 8.65f;
+	float increment_y = 5.5f;
+
+	int y_location_mult = 3;
 
 	float smooth = 25f;
 	float journeyDistance = 0f;
@@ -26,49 +28,43 @@ public class LevelSelect : MonoBehaviour {
 
 	float shake_start = 1.5f;
 
+	public static int current_level_id = 0;
+
 	// Use this for initialization
 	void Start () {
 
 		newPos = transform.position;
 		start_pos = transform.position;
 
+		GameObject cursor = GameObject.Find ("Cursor");
+
 		//Initialize grid system
 		for(int y = 0; y < grid_max_y; y++)
 			for(int x = 0; x < grid_max_x; x++)
-				grid.Add (new Vector3 (-27f + x * increment_x, 31.2f - y*increment_y, -26.3f));
+				grid.Add (new Vector3 (cursor.transform.position.x + x * increment_x, 
+				                       cursor.transform.position.y - y*increment_y, -26.3f));
 
 		//Initialize the level loading system
 
-		//Tutorials
+		//Row 1
 		levels.Add ("Nick_Level_2_basictutorial"); //level (0,0)
 		levels.Add ("Nick_Level_4_tutorialforboxandlasers"); //level (1,0)
-		levels.Add ("_Level_Selection"); //level (2,0)
-		levels.Add ("_Level_Selection"); //level (3,0)
+		levels.Add ("Nick_Level_1_devils_tuning_fork"); //level (2,0)
+		levels.Add ("Nick_Level_3_box_and_laser_level"); //level (3,0)
 
-		//Actual levels
-		//Row 1 - Nick (for now)
-		levels.Add ("Nick_Level_1_devils_tuning_fork"); //level (0,1)
-		levels.Add ("Nick_Level_3_box_and_laser_level"); //level (1,1)
+		//Row 2
+		levels.Add ("_game_play_custom_level_Jay_2"); //level (0,1)
+		levels.Add ("_game_play_custom_level_Jay_3"); //level (1,1)
 		levels.Add ("Nick_Level_5_reflexes"); //level (2,1)
 		levels.Add ("_game_play_custom_level_Jay_4"); //level (3,1)
 
-		//Row 2 - Pratik (for now)
+		//Row 3
 		levels.Add ("Pratik_Level_1"); //level (0,2)
 //		levels.Add ("_Level_Selection"); //level (1,2)
 //		levels.Add ("_Level_Selection"); //level (2,2)
 //		levels.Add ("_Level_Selection"); //level (3,2)
 
-		//Row 3 - Jay (for now)
-//		levels.Add ("_Level_Selection"); //level (0,3)
-//		levels.Add ("_Level_Selection"); //level (1,3)
-//		levels.Add ("_Level_Selection"); //level (2,3)
-//		levels.Add ("_Level_Selection"); //level (3,3)
-
-		//Row 2 - Noah (for now)
-//		levels.Add ("_Level_Selection"); //level (0,4)
-//		levels.Add ("_Level_Selection"); //level (1,4)
-//		levels.Add ("_Level_Selection"); //level (2,4)
-//		levels.Add ("_Level_Selection"); //level (3,4)
+		//Row 4
 		
 
 //		foreach (Vector3 pos in grid) {
@@ -87,7 +83,7 @@ public class LevelSelect : MonoBehaviour {
 		if(Input.GetKeyUp(KeyCode.UpArrow)){
 			if(current_y > 0){
 				current_y--;
-				newPos = grid[current_x + current_y*4];
+				newPos = grid[current_x + current_y * y_location_mult];
 				journeyDistance = Vector3.Distance(transform.position, newPos);				
 			}
 			else{
@@ -98,7 +94,7 @@ public class LevelSelect : MonoBehaviour {
 		else if(Input.GetKeyUp(KeyCode.DownArrow)){
 			if(current_y < grid_max_y - 1){
 				current_y++;
-				newPos = grid[current_x + current_y*4];
+				newPos = grid[current_x + current_y * y_location_mult];
 				journeyDistance = Vector3.Distance(transform.position, newPos);				
 			}
 			else{
@@ -110,7 +106,7 @@ public class LevelSelect : MonoBehaviour {
 		else if(Input.GetKeyUp(KeyCode.LeftArrow)){
 			if(current_x > 0){
 				current_x--;
-				newPos = grid[current_x + current_y*4];
+				newPos = grid[current_x + current_y * y_location_mult];
 				journeyDistance = Vector3.Distance(transform.position, newPos);				
 			}
 			else{
@@ -121,7 +117,7 @@ public class LevelSelect : MonoBehaviour {
 		else if(Input.GetKeyUp(KeyCode.RightArrow)){
 			if(current_x < grid_max_x - 1){
 				current_x++;
-				newPos = grid[current_x + current_y*4];
+				newPos = grid[current_x + current_y * y_location_mult];
 				journeyDistance = Vector3.Distance(transform.position, newPos);				
 			}
 			else{
@@ -148,8 +144,9 @@ public class LevelSelect : MonoBehaviour {
 	}
 
 	void LoadLevel(int x, int y){
-		print ("load!");
-		Application.LoadLevel (levels [x + y * 4]);
+//		print ("load!");
+		current_level_id = x + y * y_location_mult;
+		Application.LoadLevel (levels [current_level_id]);
 	}
 
 	void MoveScreen(){
