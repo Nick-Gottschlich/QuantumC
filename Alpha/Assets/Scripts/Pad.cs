@@ -10,6 +10,8 @@ public class Pad : MonoBehaviour {
 	public Pad			teleportOnDown;
 	public Pad			teleportOnLeft;
 	public Pad			teleportOnRight;
+	
+	public bool			boxAllowed = true;
 
 	public GameObject	heldObject;
 	

@@ -98,7 +98,7 @@ public class MoveableBlock : MonoBehaviour {
 				}
 			}
 		}
-		if(pad && pad.IsEmpty()){
+		if(pad && pad.IsEmpty() && pad.boxAllowed == true){
 			MoveToPad(pad);
 			return true;
 		}
@@ -107,11 +107,14 @@ public class MoveableBlock : MonoBehaviour {
 	}
 	
 	void TeleportMovement(Pad teleportPad, float xMod, float zMod) {
-		curPad = teleportPad;
-		Vector3 newPos = curPad.transform.position;
+		Vector3 newPos = teleportPad.transform.position;
 		newPos.x += xMod;
 		newPos.z += zMod;
 		transform.position = newPos;
+		
+		if (teleportPad && teleportPad.IsEmpty() && teleportPad.boxAllowed == true){
+			MoveToPad(teleportPad);
+		}
 	}
 
 	void MoveToPad(Pad pad) {

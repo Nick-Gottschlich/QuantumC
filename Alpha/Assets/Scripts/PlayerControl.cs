@@ -214,6 +214,7 @@ public class PlayerControl : MonoBehaviour {
 		GameRunner.killedByEnemy();
 	}
 	
+	//change this to lastpad instead of lastmovedir
 	public void moveBack() {
 		if (lastMoveDir == Direction.UP) {
 			StandardMovement(down);
