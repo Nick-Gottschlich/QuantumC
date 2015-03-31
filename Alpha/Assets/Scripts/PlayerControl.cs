@@ -16,8 +16,6 @@ public class PlayerControl : MonoBehaviour {
 	public float 			smooth = 10f;
 	public Pad				startPad;
 	Pad						curPad;
-	float 					journeyDistance = 0f;
-	bool 					distanceSet = false;
 	bool 					feedbackMovement = false;
 	float					timeSinceFeedback = 0f;
 	
@@ -189,7 +187,6 @@ public class PlayerControl : MonoBehaviour {
 			carriedBy.carrying = null;
 			carriedBy = null;
 		}
-		distanceSet = false;
 	}
 	
 	void Mount(PlayerControl player) {
