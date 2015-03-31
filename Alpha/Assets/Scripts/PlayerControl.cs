@@ -136,7 +136,8 @@ public class PlayerControl : MonoBehaviour {
 			} else if (pad.heldObject.CompareTag("MoveableBlock")) {
 				Push(pad);
 			}
-		} else {
+		} 
+		else if (Time.timeScale != 0) {
 			//give some feedback to player to show they can't move that direction
 			if (searchPos == up && !feedbackMovement) {
 				//slight movement in positive x direction
@@ -209,7 +210,25 @@ public class PlayerControl : MonoBehaviour {
 
 	//minor bug with this: if player keeps holding a direction while transporting back if the player moves over a pad
 	//	on the way back they might move as if they were on this pad
+	//killed should freeze game, show big text saying "YOU DIED", and press R to restart
 	public void Killed() {
-		curPad = startPad;
+		//Application.LoadLevel(Application.loadedLevel);
+		
+		GameRunner.killedByEnemy();
+	}
+	
+	public void moveBack() {
+		if (lastMoveDir == Direction.UP) {
+			StandardMovement(down);
+		}
+		if (lastMoveDir == Direction.DOWN) {
+			StandardMovement(up);
+		}
+		if (lastMoveDir == Direction.LEFT) {
+			StandardMovement(right);
+		}
+		if (lastMoveDir == Direction.RIGHT) {
+			StandardMovement(left);
+		}
 	}
 }

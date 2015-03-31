@@ -32,7 +32,7 @@ public class Turret : MonoBehaviour {
 		if (Physics.Raycast(lineStart, shotDir, out hit, Mathf.Infinity, playerLayerMask)) {
 			line.SetPosition(1, lineStart + (shotDir * (Vector3.Distance(hit.transform.position, lineStart))));
 			if (hit.collider.CompareTag("Player")) {
-				hit.collider.GetComponent<PlayerControl>().Killed();
+				hit.collider.GetComponent<PlayerControl>().moveBack();
 			}
 		} else if(Physics.Raycast(lineStart, shotDir, out hit, Mathf.Infinity, groundLayerMask)) {
 			line.SetPosition(1, lineStart + (shotDir * (Vector3.Distance(hit.transform.position, lineStart))));
