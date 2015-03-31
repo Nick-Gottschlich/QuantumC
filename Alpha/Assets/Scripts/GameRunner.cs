@@ -90,15 +90,16 @@ public class GameRunner : MonoBehaviour {
 
 	bool AllLevelsDone(){
 		foreach (bool completed in levels_completed.Values) {
-			if(!completed)
+			if (!completed)
 				return false;
+		}
+
+		return true;
 	}
 	
 	public static void killedByEnemy() {
 		Time.timeScale = 0;
 		dead = true;
 		deathText.text = "ALL \n SYSTEMS \n CORRUPTED";
-
-		return true;
 	}
 }
