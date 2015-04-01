@@ -56,7 +56,7 @@ public class GameRunner : MonoBehaviour {
 	void Update () {
 		//get rid of or change this in the future, maybe have it call a cutscene, and then go to next level?
 		if (P1colGoal && P2colGoal) {
-			winText.text = "You Win!";
+			winText.text = "ACCESS GRANTED \n PRESS ENTER";
 			Time.timeScale = 0;
 
 			levels_completed[Application.loadedLevelName] = true;  //Update levels completed
