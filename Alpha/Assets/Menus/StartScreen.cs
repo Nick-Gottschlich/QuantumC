@@ -15,8 +15,10 @@ public class StartScreen : MonoBehaviour {
 		if (Application.loadedLevelName == "_Start_Screen") {
 			light.transform.rotation = Quaternion.Euler(new Vector3(359.2033f, 322.2887f, 282.8511f));
 
-			if (Input.GetKeyUp (KeyCode.Return))
+			if (Input.GetKeyUp (KeyCode.Tab))
 				Application.LoadLevel ("_Level_Selection");
+			else if (Input.GetKeyUp (KeyCode.Return))
+				Application.LoadLevel ("_Transition_1");
 		}
 		else if (Application.loadedLevelName == "_Level_Selection"){
 			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));

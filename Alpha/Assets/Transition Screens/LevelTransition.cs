@@ -18,6 +18,10 @@ public class LevelTransition : MonoBehaviour {
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("Nick_Level_2_basictutorial");
 		}
+		else if (Application.loadedLevelName == "_Transition_1_2") {			
+			if (Input.GetKeyUp (KeyCode.Return))
+				Application.LoadLevel ("Nick_Level_6");
+		}
 		else if (Application.loadedLevelName == "_Transition_2") {			
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("Nick_Level_4_tutorialforboxandlasers");
