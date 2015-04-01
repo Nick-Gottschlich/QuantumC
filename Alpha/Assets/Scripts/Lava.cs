@@ -22,6 +22,10 @@ public class Lava : MonoBehaviour {
 	void OnCollisionEnter(Collision c) {
 
 		// Restart level
-		Application.LoadLevel(Application.loadedLevel);
+		//Application.LoadLevel(Application.loadedLevel);
+		
+		if (c.gameObject.tag == "Player") {
+			GameRunner.killedByLava();
+		}
 	}
 }

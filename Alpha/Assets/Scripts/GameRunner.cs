@@ -118,4 +118,11 @@ public class GameRunner : MonoBehaviour {
 
 		deathText.text = "ALL \n SYSTEMS \n CORRUPTED";
 	}
+	
+	public static void killedByLava() {
+		Time.timeScale = 0;
+		dead = true;
+		
+		deathText.text = "ALERT: \n FIREWALL \n ENGAGED";
+	}
 }
