@@ -41,7 +41,10 @@ public class GameRunner : MonoBehaviour {
 
 	void Awake(){
 		//Initilaize level completion tracking variable
+		LevelSelect.initLevels ();
+
 		if(!levels_initialized){
+			print("count: " + LevelSelect.levels.Count);
 			for(int x = 0; x < LevelSelect.levels.Count; x++)
 				levels_completed.Add(LevelSelect.levels[x], false);
 
@@ -55,14 +58,22 @@ public class GameRunner : MonoBehaviour {
 		if (P1colGoal && P2colGoal) {
 			winText.text = "You Win!";
 			Time.timeScale = 0;
+
+			levels_completed[Application.loadedLevelName] = true;  //Update levels completed
+
+			if(Input.GetKeyUp(KeyCode.Return) && !AllLevelsDone()) {
+				//Load the next level in the sequence
+				LevelSelect.current_level_id++;
+				Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
+			}
+			else if(Input.GetKeyUp(KeyCode.Return) && AllLevelsDone()) {
+				Application.LoadLevel("_Success");
+			}
 		}
 			
 		//deathText.text = "";
 
-		//Update levels completed
-		levels_completed[Application.loadedLevelName] = true;
-
-		if(Input.GetKeyUp(KeyCode.Return)) {
+		if(Input.GetKeyUp(KeyCode.Escape)) {
 			Application.LoadLevel("_Level_Selection");
 		}
 		
@@ -85,25 +96,19 @@ public class GameRunner : MonoBehaviour {
 			}	
 		}
 
-		if(Input.GetKeyUp(KeyCode.Return) && !AllLevelsDone()) {
-				//Load the next level in the sequence
-				LevelSelect.current_level_id++;
-				Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
-		}
-		else if(Input.GetKeyUp(KeyCode.Return) && AllLevelsDone()) {
-				Application.LoadLevel("_Success");
-		}
-
 		if(Input.GetKeyUp(KeyCode.Escape))
 			Application.LoadLevel("_Level_Selection");
 	}
 
 	bool AllLevelsDone(){
 		foreach (bool completed in levels_completed.Values) {
+//			print("Count: " + levels_completed.Values.Count);
+
 			if (!completed)
 				return false;
 		}
 
+//		print ("blah");
 		return true;
 	}
 	
