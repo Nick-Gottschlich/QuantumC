@@ -22,10 +22,6 @@ public class LevelTransition : MonoBehaviour {
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("Nick_Level_6");
 		}
-		else if (Application.loadedLevelName == "_Transition_2") {			
-			if (Input.GetKeyUp (KeyCode.Return))
-				Application.LoadLevel ("Nick_Level_4_tutorialforboxandlasers");
-		}
 		else if (Application.loadedLevelName == "_Transition_3") {
 			extra_lines_of_text = 2;
 
@@ -50,6 +46,10 @@ public class LevelTransition : MonoBehaviour {
 				}
 			}
 		}
+		else if (Application.loadedLevelName == "_Transition_2") {			
+			if (Input.GetKeyUp (KeyCode.Return))
+				Application.LoadLevel ("Nick_Level_4_tutorialforboxandlasers");
+		}
 		else if (Application.loadedLevelName == "_Transition_4") {			
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("Nick_Level_3_box_and_laser_level");
@@ -58,25 +58,17 @@ public class LevelTransition : MonoBehaviour {
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("_game_play_custom_level_Jay_2");
 		}
-//		else if (Application.loadedLevelName == "_Transition_6") {			
-//			if (Input.GetKeyUp (KeyCode.Return))
-//				Application.LoadLevel ("_game_play_custom_level_Jay_3");
-//		}
-		else if (Application.loadedLevelName == "_Transition_7") {			
+		else if (Application.loadedLevelName == "_Transition_6") {			
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("Nick_Level_5_reflexes");
 		}
-		else if (Application.loadedLevelName == "_Transition_8") {			
+		else if (Application.loadedLevelName == "_Transition_7") {			
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("_game_play_custom_level_Jay_4");
 		}
-		else if (Application.loadedLevelName == "_Transition_9") {			
+		else if (Application.loadedLevelName == "_Transition_8") {			
 			if (Input.GetKeyUp (KeyCode.Return))
 				Application.LoadLevel ("Pratik_Level_1");
 		}
-//		else if (Application.loadedLevelName == "_Transition_10") {			
-//			if (Input.GetKeyUp (KeyCode.Return))
-//				Application.LoadLevel ("_Level_Selection");
-//		}
 	}
 }

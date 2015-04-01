@@ -56,6 +56,7 @@ public class LevelSelect : MonoBehaviour {
 
 		GameObject camera = GameObject.Find ("Camera_GUI");
 		camera_diff_y = Mathf.Abs (transform.position.y - camera.transform.position.y);
+		initLevels();
 	}
 	
 	// Update is called once per frame
@@ -127,6 +128,8 @@ public class LevelSelect : MonoBehaviour {
 	void LoadLevel(int x, int y){
 //		print ("load!");
 		current_level_id = x + y * y_location_mult;
+		print (current_level_id);
+		print (levels.Count);
 		Application.LoadLevel (levels [current_level_id]);
 	}
 
@@ -145,24 +148,24 @@ public class LevelSelect : MonoBehaviour {
 			//		levels.Add ("Nick_Level_4_tutorialforboxandlasers"); //level (1,0)
 			levels.Add ("_Transition_1_2"); //level (1,0)
 			levels.Add ("_Transition_2"); //level (1,0)
+			levels.Add ("_Transition_4"); //level (0,1)
 			//		levels.Add ("Nick_Level_1_devils_tuning_fork"); //level (2,0)
-			levels.Add ("_Transition_3"); //level (2,0)
 			//		levels.Add ("Nick_Level_3_box_and_laser_level"); //level (3,0)
 			//		levels.Add ("_Transition_4"); //level (3,0)
 			
 			//Row 2
-			levels.Add ("_game_play_custom_level_Jay_2"); //level (0,1)
+			levels.Add ("_Transition_3"); //level (2,0)
 			//		levels.Add ("_Transition_5"); //level (0,1)
 			//		levels.Add ("_game_play_custom_level_Jay_3"); //level (1,1)
 			//		levels.Add ("_Transition_6"); //level (1,1)
-			levels.Add ("Nick_Level_5_reflexes"); //level (2,1)
+			levels.Add ("_Transition_5"); //level (2,1)
 			//		levels.Add ("_Transition_7"); //level (2,1)
-			levels.Add ("_game_play_custom_level_Jay_4"); //level (3,1)
+			levels.Add ("_Transition_6"); //level (3,1)
 			//		levels.Add ("_Transition_8"); //level (3,1)
 			
 			//Row 3
-			levels.Add ("Pratik_Level_1"); //level (0,2)
-			//		levels.Add ("_Transition_9"); //level (0,2)
+			levels.Add ("_Transition_7"); //level (0,2)
+			levels.Add ("_Transition_8"); //level (4,1)
 			//		levels.Add ("_Level_Selection"); //level (1,2)
 			//		levels.Add ("_Level_Selection"); //level (2,2)
 			//		levels.Add ("_Level_Selection"); //level (3,2)
