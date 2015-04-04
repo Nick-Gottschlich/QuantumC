@@ -10,6 +10,8 @@ public class EnemyControl : MonoBehaviour {
 	GameObject				left;
 	GameObject				right;
 	
+	GameObject				wormShape;
+	
 	public float 			smooth = 10f;
 	public Pad				startPad;
 	Pad						curPad;
@@ -22,6 +24,8 @@ public class EnemyControl : MonoBehaviour {
 	bool					enemyStopped = false;
 	int						swap = 0;
 	Vector3 				curPos;
+	
+	Vector3					newRot;
 
 	// Use this for initialization
 	void Start () {
@@ -29,6 +33,8 @@ public class EnemyControl : MonoBehaviour {
 		down = transform.FindChild("Back").gameObject;
 		left = transform.FindChild("Left").gameObject;
 		right = transform.FindChild("Right").gameObject;
+		
+		wormShape = transform.FindChild("WormShape").gameObject;
 		
 		curPad = startPad;
 	}
@@ -43,6 +49,10 @@ public class EnemyControl : MonoBehaviour {
 					enemyDir += 1;
 					
 					if (swap >= 20) {
+						newRot = transform.eulerAngles;
+						newRot.y = 90;
+						wormShape.transform.eulerAngles = newRot;
+						
 						enemyDir = 2;
 						swap = 0;
 					}
@@ -52,6 +62,10 @@ public class EnemyControl : MonoBehaviour {
 					enemyDir -= 1;
 					
 					if (swap >= 20) {
+						newRot = transform.eulerAngles;
+						newRot.y = 90;
+						wormShape.transform.eulerAngles = newRot;
+						
 						enemyDir = 3;
 						swap = 0;
 					}
@@ -62,6 +76,10 @@ public class EnemyControl : MonoBehaviour {
 					enemyDir += 1;
 					
 					if (swap >= 20) {
+						newRot = transform.eulerAngles;
+						newRot.y = 0;
+						wormShape.transform.eulerAngles = newRot;
+						
 						enemyDir = 0;
 						swap = 0;
 					}
@@ -71,6 +89,10 @@ public class EnemyControl : MonoBehaviour {
 					enemyDir -= 1;
 					
 					if (swap >= 20) {
+						newRot = transform.eulerAngles;
+						newRot.y = 0;
+						wormShape.transform.eulerAngles = newRot;
+						
 						enemyDir = 1;
 						swap = 0;
 					}
@@ -129,7 +151,8 @@ public class EnemyControl : MonoBehaviour {
 			//print ("enemy stopped");
 			enemyStopped = true;
 			swap += 1;
-		} else {
+		} 
+		else {
 			enemyStopped = false;
 			swap = 0;
 		}
