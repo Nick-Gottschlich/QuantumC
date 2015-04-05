@@ -10,10 +10,17 @@ public class GameRunner : MonoBehaviour {
 	static public bool P2colGoal = false;
 	
 	static bool dead = false;
+	static bool winSoundBool = false;
+	static bool deathSoundBool = false;
 
 	public Text winText;
 	public Text pauseText;
 	public static Text deathText;
+	public AudioClip winSound;
+	public AudioClip deathSound;
+	public AudioClip deathSound2;
+	
+	private AudioSource source;
 
 	//GameObject P1 = GameObject.Find("Player1");
 	//GameObject P2 = GameObject.Find("Player2");
@@ -23,6 +30,10 @@ public class GameRunner : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		source = GetComponent<AudioSource>();
+		winSoundBool = false;
+		deathSoundBool = false;
+	
 		GameObject winDisp = GameObject.Find("WinDisp");
 		winText = winDisp.GetComponent<Text>();
 		
@@ -56,6 +67,10 @@ public class GameRunner : MonoBehaviour {
 	void Update () {
 		//get rid of or change this in the future, maybe have it call a cutscene, and then go to next level?
 		if (P1colGoal && P2colGoal) {
+			if (winSoundBool == false) {
+				source.PlayOneShot(winSound);
+			}
+			winSoundBool = true;
 			winText.text = "ACCESS GRANTED \n PRESS ENTER";
 			Time.timeScale = 0;
 
@@ -112,16 +127,29 @@ public class GameRunner : MonoBehaviour {
 		return true;
 	}
 	
+	
 	public static void killedByEnemy() {
 		Time.timeScale = 0;
 		dead = true;
 
+		//for some reason this doesn't work? error error CS0120
+		/*if (deathSoundBool == false) {
+			source.PlayOneShot(deathSound);
+		}
+		deathSoundBool = true;*/
+		
 		deathText.text = "ALL \n SYSTEMS \n CORRUPTED";
 	}
 	
 	public static void killedByLava() {
 		Time.timeScale = 0;
 		dead = true;
+		
+		//for some reason this doesn't work? error error CS0120
+		/*if (deathSoundBool == false) {
+			source.PlayOneShot(deathSound2);
+		}
+		deathSoundBool = true;*/
 		
 		deathText.text = "ALERT: \n FIREWALL \n ENGAGED";
 	}
