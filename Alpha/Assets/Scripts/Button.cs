@@ -14,6 +14,10 @@ public class Button : MonoBehaviour {
 	bool pressed = false;
 	bool curMoving = false;
 	bool curRotating = false;
+	
+	private AudioSource source;
+	public AudioClip buttonOn;
+	public AudioClip buttonOff;
 
 	// For Debugging purposes
 	void OnGizmosDraw() {
@@ -26,6 +30,8 @@ public class Button : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		source = GetComponent<AudioSource>();
+	
 		holdMov = controlObject.transform.position;
 		holdRot = controlObject.transform.eulerAngles;
 	}
@@ -51,7 +57,10 @@ public class Button : MonoBehaviour {
 		int layerMask = 1 << LayerMask.NameToLayer ("PlayerLayer");
 		Vector3 rayCenter = transform.position;
 		rayCenter.y -= 0.5f;
-		if (Physics.Raycast (rayCenter, Vector3.up, 1f, layerMask) && !pressed && !curMoving && !curRotating) {
+		if (Physics.Raycast (rayCenter, Vector3.up, .8f, layerMask) && !pressed && !curMoving && !curRotating) {
+			if (pressed == false){
+				source.PlayOneShot(buttonOn);
+			}
 			pressed = true;
 			if (moveOrRotate == MoveOrRotate.Move)
 				controlObject.Move ();
@@ -76,8 +85,11 @@ public class Button : MonoBehaviour {
 				controlObject.Move ();
 				controlObject.Rotate ();
 			}
-		} else if(!Physics.Raycast (rayCenter, Vector3.up, 1f, layerMask)) {
+		} else if(!Physics.Raycast (rayCenter, Vector3.up, .8f, layerMask)) {
 			pressed = false;
+			if (pressed == true){
+				source.PlayOneShot(buttonOff);
+			}
 		}
 		
 		holdMov = controlObject.transform.position;
