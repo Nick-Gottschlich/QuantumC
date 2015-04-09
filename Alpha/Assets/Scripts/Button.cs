@@ -59,6 +59,18 @@ public class Button : MonoBehaviour {
 				controlObject.Rotate();
 			else if (moveOrRotate == MoveOrRotate.Once) {
 				controlObject.MoveOnce(moveOnceLoc);
+				foreach (Transform child in transform) {
+					if (child.name == "Button 2") {
+						Destroy (child.gameObject);
+					} else if (child.name == "part 2") {
+						Destroy (child.gameObject);
+					} else if (child.name == "part 3") {
+						Destroy (child.gameObject);
+					} else {
+						break;
+					}
+				}
+				Destroy (gameObject.GetComponent<Button>());
 			}
 			else { //All
 				controlObject.Move ();
