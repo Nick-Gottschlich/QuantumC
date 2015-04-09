@@ -63,7 +63,7 @@ public class GameRunner : MonoBehaviour {
 		LevelSelect.initLevels ();
 		
 		if(!levels_initialized){
-			print("count: " + LevelSelect.levels.Count);
+			//print("count: " + LevelSelect.levels.Count);
 			for(int x = 0; x < LevelSelect.levels.Count; x++)
 				levels_completed.Add(LevelSelect.levels[x], false);
 			
