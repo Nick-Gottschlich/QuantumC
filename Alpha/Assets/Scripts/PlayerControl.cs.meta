@@ -1,8 +1,16 @@
 fileFormatVersion: 2
 guid: e8090ee714f2348a1b28b0874a9bca81
+timeCreated: 1428539509
+licenseType: Free
 MonoImporter:
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - startPad: {instanceID: 0}
+  - carrying: {instanceID: 0}
+  - carriedBy: {instanceID: 0}
+  - zap: {fileID: 8300000, guid: 90941fc7e86f38c42af12fe3d7fa94e4, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
+  assetBundleName: 
+  assetBundleVariant: 

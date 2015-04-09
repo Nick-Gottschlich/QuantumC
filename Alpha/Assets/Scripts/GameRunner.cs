@@ -6,34 +6,37 @@ using UnityEngine.UI;
 //make the death text flash doeeeeeeeeeee
 
 public class GameRunner : MonoBehaviour {
+	static public GameRunner S;
+	
 	static public bool P1colGoal = false;
 	static public bool P2colGoal = false;
 	
 	static bool dead = false;
 	static bool winSoundBool = false;
 	static bool deathSoundBool = false;
-
+	
 	public Text winText;
 	public Text pauseText;
 	public static Text deathText;
 	public AudioClip winSound;
 	public AudioClip deathSound;
+	public AudioClip alarm;
 	public AudioClip deathSound2;
 	
 	private AudioSource source;
-
+	
 	//GameObject P1 = GameObject.Find("Player1");
 	//GameObject P2 = GameObject.Find("Player2");
-
+	
 	static SortedDictionary<string,bool> levels_completed = new SortedDictionary<string, bool>();
 	static bool levels_initialized = false;
-
+	
 	// Use this for initialization
 	void Start () {
 		source = GetComponent<AudioSource>();
 		winSoundBool = false;
 		deathSoundBool = false;
-	
+		
 		GameObject winDisp = GameObject.Find("WinDisp");
 		winText = winDisp.GetComponent<Text>();
 		
@@ -49,16 +52,21 @@ public class GameRunner : MonoBehaviour {
 		
 		Time.timeScale = 1;
 	}
-
+	
 	void Awake(){
+		S = this;
+		
+		//winSoundBool = false;
+		//deathSoundBool = false;
+		
 		//Initilaize level completion tracking variable
 		LevelSelect.initLevels ();
-
+		
 		if(!levels_initialized){
 			print("count: " + LevelSelect.levels.Count);
 			for(int x = 0; x < LevelSelect.levels.Count; x++)
 				levels_completed.Add(LevelSelect.levels[x], false);
-
+			
 			levels_initialized = true;
 		}
 	}
@@ -73,9 +81,9 @@ public class GameRunner : MonoBehaviour {
 			winSoundBool = true;
 			winText.text = "ACCESS GRANTED \n PRESS ENTER";
 			Time.timeScale = 0;
-
+			
 			levels_completed[Application.loadedLevelName] = true;  //Update levels completed
-
+			
 			if(Input.GetKeyUp(KeyCode.Return) && !AllLevelsDone()) {
 				//Load the next level in the sequence
 				LevelSelect.current_level_id++;
@@ -85,9 +93,9 @@ public class GameRunner : MonoBehaviour {
 				Application.LoadLevel("_Success");
 			}
 		}
-			
+		
 		//deathText.text = "";
-
+		
 		if(Input.GetKeyUp(KeyCode.Escape)) {
 			Application.LoadLevel("_Level_Selection");
 		}
@@ -110,20 +118,20 @@ public class GameRunner : MonoBehaviour {
 				pauseText.text = "Pause";
 			}	
 		}
-
+		
 		if(Input.GetKeyUp(KeyCode.Escape))
 			Application.LoadLevel("_Level_Selection");
 	}
-
+	
 	bool AllLevelsDone(){
 		foreach (bool completed in levels_completed.Values) {
-//			print("Count: " + levels_completed.Values.Count);
-
+			//			print("Count: " + levels_completed.Values.Count);
+			
 			if (!completed)
 				return false;
 		}
-
-//		print ("blah");
+		
+		//		print ("blah");
 		return true;
 	}
 	
@@ -131,12 +139,12 @@ public class GameRunner : MonoBehaviour {
 	public static void killedByEnemy() {
 		Time.timeScale = 0;
 		dead = true;
-
-		//for some reason this doesn't work? error error CS0120
-		/*if (deathSoundBool == false) {
-			source.PlayOneShot(deathSound);
+		
+		if (deathSoundBool == false) {
+			S.source.PlayOneShot(S.deathSound);
+			S.source.PlayOneShot(S.alarm);
 		}
-		deathSoundBool = true;*/
+		deathSoundBool = true;
 		
 		deathText.text = "ALL \n SYSTEMS \n CORRUPTED";
 	}
@@ -145,11 +153,11 @@ public class GameRunner : MonoBehaviour {
 		Time.timeScale = 0;
 		dead = true;
 		
-		//for some reason this doesn't work? error error CS0120
-		/*if (deathSoundBool == false) {
-			source.PlayOneShot(deathSound2);
+		if (deathSoundBool == false) {
+			S.source.PlayOneShot(S.deathSound2);
+			S.source.PlayOneShot(S.alarm);
 		}
-		deathSoundBool = true;*/
+		deathSoundBool = true;
 		
 		deathText.text = "ALERT: \n FIREWALL \n ENGAGED";
 	}

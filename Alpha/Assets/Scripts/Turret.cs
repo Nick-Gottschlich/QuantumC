@@ -7,9 +7,14 @@ public class Turret : MonoBehaviour {
 	Vector3			shotDir = Vector3.forward;
 
 	Vector3			lineStart;
+	
+	private AudioSource source;
+	public AudioClip zap;
 
 	// Use this for initialization
 	void Start () {
+		source = GetComponent<AudioSource>();
+	
 		line = gameObject.GetComponent<LineRenderer>();
 		lineStart = transform.position;
 		lineStart.y += 1f;
@@ -32,6 +37,11 @@ public class Turret : MonoBehaviour {
 		if (Physics.Raycast(lineStart, shotDir, out hit, Mathf.Infinity, playerLayerMask)) {
 			line.SetPosition(1, lineStart + (shotDir * (Vector3.Distance(hit.transform.position, lineStart))));
 			if (hit.collider.CompareTag("Player")) {
+				if (!source.isPlaying){
+					source.clip = zap;
+					source.Play();
+				}
+			
 				hit.collider.GetComponent<PlayerControl>().moveBack();
 			}
 		} else if(Physics.Raycast(lineStart, shotDir, out hit, Mathf.Infinity, groundLayerMask)) {

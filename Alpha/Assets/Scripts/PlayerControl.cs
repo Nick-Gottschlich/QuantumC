@@ -228,21 +228,15 @@ public class PlayerControl : MonoBehaviour {
 		}
 	}
 
-	//minor bug with this: if player keeps holding a direction while transporting back if the player moves over a pad
-	//	on the way back they might move as if they were on this pad
-	//killed should freeze game, show big text saying "YOU DIED", and press R to restart
 	public void Killed() {
-		//Application.LoadLevel(Application.loadedLevel);
-		
 		GameRunner.killedByEnemy();
 	}
 	
-	//change this to lastpad instead of lastmovedir
 	public void moveBack() {
 		float teleMod = 1f;
 		if (lastMoveDir == Direction.DOWN) {
-			lastMove = Time.time;
-			lastMoveDir = Direction.UP;
+			//lastMove = Time.time;
+			//lastMoveDir = Direction.UP;
 			if (curPad.teleportOnUp) {
 				TeleportMovement(curPad.teleportOnUp, -teleMod, 0f);
 			} else {
@@ -250,8 +244,8 @@ public class PlayerControl : MonoBehaviour {
 			}
 		}
 		if (lastMoveDir == Direction.UP) {
-			lastMove = Time.time;
-			lastMoveDir = Direction.DOWN;
+			//lastMove = Time.time;
+			//lastMoveDir = Direction.DOWN;
 			if (curPad.teleportOnDown) {
 				TeleportMovement(curPad.teleportOnDown, teleMod, 0f);
 			} else {
@@ -259,8 +253,8 @@ public class PlayerControl : MonoBehaviour {
 			}
 		}
 		if (lastMoveDir == Direction.RIGHT) {
-			lastMove = Time.time;
-			lastMoveDir = Direction.LEFT;
+			//lastMove = Time.time;
+			//lastMoveDir = Direction.LEFT;
 			if (curPad.teleportOnLeft) {
 				TeleportMovement(curPad.teleportOnLeft, 0f, -teleMod);
 			} else {
@@ -268,8 +262,8 @@ public class PlayerControl : MonoBehaviour {
 			}
 		}
 		if (lastMoveDir == Direction.LEFT) {
-			lastMove = Time.time;
-			lastMoveDir = Direction.RIGHT;
+			//lastMove = Time.time;
+			//lastMoveDir = Direction.RIGHT;
 			if (curPad.teleportOnRight) {
 				TeleportMovement(curPad.teleportOnRight, 0f, teleMod);
 			} else {
