@@ -14,7 +14,7 @@ public class CheckGoal : MonoBehaviour {
 		Vector3 pos = transform.position;
 		pos.y -= .5f;
 		int layerMask = 1 << LayerMask.NameToLayer ("PlayerLayer");
-		if (Physics.Raycast (pos, Vector3.up, out hit, 2f, layerMask)) {
+		if (Physics.Raycast (pos, Vector3.up, out hit, .75f, layerMask)) {
 			if (hit.collider.name == "Player1" && transform.name == "P1Goal") {
 				GameRunner.P1colGoal = true;
 			}
