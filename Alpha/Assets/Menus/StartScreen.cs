@@ -5,7 +5,7 @@ public class StartScreen : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
+		LevelSelect.initLevels ();
 	}
 	
 	// Update is called once per frame
