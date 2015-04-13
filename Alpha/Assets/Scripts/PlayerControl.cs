@@ -131,8 +131,7 @@ public class PlayerControl : MonoBehaviour {
 					pad = hitPad.collider.GetComponentInParent<Pad>();
 				}
 			} else if (Physics.Raycast(searchPos.transform.position, Vector3.down, out hitPad, 1f)) {
-				if ((hitPad.collider.GetComponentInParent<Pad>() && hitPad.collider.GetComponentInParent<Pad>().isSlope) ||
-				    carriedBy) {
+				if (hitPad.collider.GetComponentInParent<Pad>()) {
 					pad = hitPad.collider.GetComponentInParent<Pad>();
 				}
 			}
@@ -223,8 +222,8 @@ public class PlayerControl : MonoBehaviour {
 	void Push (Pad pad) {
 		MoveableBlock block = pad.heldObject.GetComponent<MoveableBlock>();
 		if (block.Push(lastMoveDir)) {
-			print ("pushed");
-			MoveToPad(pad);
+			if (pad.IsEmpty ())
+				MoveToPad(pad);
 		} else {
 			print ("could not push");
 		}
