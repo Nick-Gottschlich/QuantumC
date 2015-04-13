@@ -73,6 +73,12 @@ public class LinearPlatform : MonoBehaviour {
 	}
 
 	public void Rotate() {
+		Pad [] pads = GetComponentsInChildren<Pad>();
+		foreach(Pad p in pads) {
+			if (!p.IsEmpty()) {
+				return;
+			}
+		}
 		angle += 90f;
 //		angle = 90f * num_rotations;
 //		num_rotations++;

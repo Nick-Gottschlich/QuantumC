@@ -119,18 +119,20 @@ public class PlayerControl : MonoBehaviour {
 		Collider[] hits = Physics.OverlapSphere(startPos, 0.4f);
 		if (hits.Length > 0) {
 			foreach (Collider c in hits) {
-				if (c.CompareTag("Pad")) {
+				if (c.CompareTag("Pad") && c.GetComponentInParent<Pad>().CorrectAngle()) {
 					pad = c.GetComponentInParent<Pad>();
 				}
 			}
 		} else {
 			RaycastHit hitPad;
 			if (Physics.Raycast(searchPos.transform.position, Vector3.up, out hitPad, 1f)) {
-				if (hitPad.collider.GetComponentInParent<Pad>().isSlope || carriedBy) {
+				if ((hitPad.collider.GetComponentInParent<Pad>() && hitPad.collider.GetComponentInParent<Pad>().isSlope) ||
+				    carriedBy) {
 					pad = hitPad.collider.GetComponentInParent<Pad>();
 				}
 			} else if (Physics.Raycast(searchPos.transform.position, Vector3.down, out hitPad, 1f)) {
-				if (hitPad.collider.GetComponentInParent<Pad>() || carriedBy) {
+				if ((hitPad.collider.GetComponentInParent<Pad>() && hitPad.collider.GetComponentInParent<Pad>().isSlope) ||
+				    carriedBy) {
 					pad = hitPad.collider.GetComponentInParent<Pad>();
 				}
 			}
