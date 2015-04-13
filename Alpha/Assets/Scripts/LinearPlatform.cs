@@ -10,6 +10,7 @@ public class LinearPlatform : MonoBehaviour {
 	public bool	infiniteSpin = false;
 	public Axis rotationAxis;
 	public float rotspeed = 50f;
+	public bool noRotateOnPlayerStand = false;
 	float angle = 0f;
 
 	public bool infiniteMove = false;
@@ -73,10 +74,12 @@ public class LinearPlatform : MonoBehaviour {
 	}
 
 	public void Rotate() {
-		Pad [] pads = GetComponentsInChildren<Pad>();
-		foreach(Pad p in pads) {
-			if (!p.IsEmpty()) {
-				return;
+		if (noRotateOnPlayerStand) {
+			Pad [] pads = GetComponentsInChildren<Pad>();
+			foreach(Pad p in pads) {
+				if (!p.IsEmpty()) {
+					return;
+				}
 			}
 		}
 		angle += 90f;
