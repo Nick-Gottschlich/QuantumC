@@ -3,51 +3,84 @@ using System.Collections;
 
 public class StartScreen : MonoBehaviour {
 
+	GameObject selector;
+	int selectorPos = 0;
+	Vector3 [] optionsPos;
+	string [] optionScenes;
+
 	// Use this for initialization
 	void Start () {
 		LevelSelect.initLevels ();
+
+
+	}
+
+	void InitStartScreenOptions() {
+		if (Application.loadedLevelName == "_Start_Screen") {
+			selector = GameObject.Find("Selector");
+
+			optionScenes = new string[3] {"", "_Level_Selection", "_Instructions"};
+			optionsPos = new Vector3[3];
+
+			optionsPos[0] = selector.transform.position;
+			optionsPos[1] = new Vector3(optionsPos[0].x, optionsPos[0].y, optionsPos[0].z);
+			optionsPos[2] = new Vector3(optionsPos[1].x, optionsPos[1].y, optionsPos[1].z);
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject light = GameObject.Find ("Directional Light");
-
 		if (Application.loadedLevelName == "_Start_Screen") {
-			light.transform.rotation = Quaternion.Euler(new Vector3(359.2033f, 322.2887f, 282.8511f));
-
-			if (Input.GetKeyUp (KeyCode.Tab))
-				Application.LoadLevel ("_Level_Selection");
-			else if (Input.GetKeyUp (KeyCode.Return))
-				Application.LoadLevel ("_Transition_1");
+			StartScreenRun ();
 		}
 		else if (Application.loadedLevelName == "_Level_Selection"){
-			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
-
-			if(Input.GetKeyUp (KeyCode.I))
-				Application.LoadLevel ("_Instructions");
-			else if(Input.GetKeyUp (KeyCode.O))
-				Application.LoadLevel ("_Objective");
+			LevelSelection ();
 		}
 		else if (Application.loadedLevelName == "_Instructions"){
-			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
-//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
-
-			if (Input.GetKeyUp (KeyCode.I) || Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.Escape))
-				Application.LoadLevel ("_Level_Selection");
-		}
-		else if (Application.loadedLevelName == "_Objective"){
-			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
-//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
-
-			if (Input.GetKeyUp (KeyCode.O) || Input.GetKeyUp (KeyCode.Return) || Input.GetKeyUp (KeyCode.Escape))
-				Application.LoadLevel ("_Level_Selection");
+			Instructions ();
 		}
 		else if (Application.loadedLevelName == "_Success"){
-			light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
-			//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
-			
-			if (Input.GetKeyUp (KeyCode.Return))
-				Application.LoadLevel ("_Start_Screen");
+			Success ();
 		}
 	}
+
+	void StartScreenRun() {
+		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
+			MoveSelector(1);
+		} else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) {
+			MoveSelector(-1);
+		} else if (Input.GetKeyDown(KeyCode.Return)) {
+			Application.LoadLevel(optionScenes[selectorPos]);
+		}
+	}
+
+	void MoveSelector(int dir) {
+		selectorPos += dir;
+		selectorPos = selectorPos % 3;
+		selector.transform.position = optionsPos[selectorPos];
+	}
+
+	void Instructions() {
+
+	}
+
+	void LevelSelection() {
+		GameObject light = GameObject.Find ("Directional Light");
+		light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
+		
+		if(Input.GetKeyUp (KeyCode.I))
+			Application.LoadLevel ("_Instructions");
+		else if(Input.GetKeyUp (KeyCode.O))
+			Application.LoadLevel ("_Objective");
+	}
+
+	void Success() {
+		GameObject light = GameObject.Find ("Directional Light");
+		light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
+		//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
+		
+		if (Input.GetKeyUp (KeyCode.Return))
+			Application.LoadLevel ("_Start_Screen");
+	}
+
 }
