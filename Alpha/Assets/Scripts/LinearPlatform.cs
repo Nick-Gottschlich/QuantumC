@@ -92,9 +92,16 @@ public class LinearPlatform : MonoBehaviour {
 	}
 
 	Vector3 DoMove () {
-
 		Vector3 dest = posOrNeg ? finalPos : startPos;
-		if (Vector3.Distance (transform.position, dest) > 0.2f) {
+		float distance;
+		if (moveAxis == Axis.z) {
+			distance = Mathf.Abs(transform.position.z - dest.z);
+		} else if (moveAxis == Axis.y) {
+			distance = Mathf.Abs(transform.position.y - dest.y);
+		} else {
+			distance = Mathf.Abs(transform.position.x - dest.x);
+		}
+		if (distance > 0.2f) {
 			if (moveAxis == Axis.z) {
 				if (transform.position.z > dest.z) {
 					return transform.position + Vector3.back * Time.deltaTime * movspeed;

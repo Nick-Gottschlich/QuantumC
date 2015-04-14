@@ -89,9 +89,6 @@ public class GameRunner : MonoBehaviour {
 				LevelSelect.current_level_id++;
 				Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
 			}
-			else if(Input.GetKeyUp(KeyCode.Return) && AllLevelsDone()) {
-				Application.LoadLevel("_Success");
-			}
 		}
 		
 		//deathText.text = "";

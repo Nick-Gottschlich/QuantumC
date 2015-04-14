@@ -31,7 +31,6 @@ public class MoveableBlock : MonoBehaviour {
 		if (!distanceSet) {
 			distanceSet = true;
 			journeyDistance = Vector3.Distance(transform.position, newPos);
-			//			print (journeyDistance);
 		}
 		
 		float fracJourney = Time.deltaTime * smooth / journeyDistance;
@@ -77,8 +76,6 @@ public class MoveableBlock : MonoBehaviour {
 		Vector3 startPos = searchPos.transform.position;
 		Collider[] hits = Physics.OverlapSphere(startPos, 0.4f);
 		Pad pad = null;
-		print (hits.Length);
-		print (searchPos.name);
 		if (hits.Length > 0) {
 			foreach (Collider c in hits) {
 				if (c.CompareTag("Pad")) {

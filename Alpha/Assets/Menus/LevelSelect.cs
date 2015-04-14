@@ -160,18 +160,21 @@ public class LevelSelect : MonoBehaviour {
 			levels.Add ("_Transition_4"); //level (3,0)
 
 //			levels.Add ("_game_play_custom_level_Jay_2"); //level (0,1)
-					levels.Add ("_Transition_5"); //level (0,1)
+			levels.Add ("_Transition_5"); //level (0,1)
 			//		levels.Add ("_game_play_custom_level_Jay_3"); //level (1,1)
-					levels.Add ("_Transition_6"); //level (1,1)
+			levels.Add ("_Transition_6"); //level (1,1)
 //			levels.Add ("Nick_Level_5_reflexes"); //level (2,1)
-					levels.Add ("_Transition_7"); //level (2,1)
+			levels.Add ("_Transition_7"); //level (2,1)
 //			levels.Add ("_game_play_custom_level_Jay_4"); //level (3,1)
-					levels.Add ("_Transition_8"); //level (3,1)
+			levels.Add ("_Transition_8"); //level (3,1)
 //			levels.Add ("Pratik_Level_1"); //level (0,2)
 			//		levels.Add ("_Transition_9"); //level (0,2)
 			//		levels.Add ("_Level_Selection"); //level (1,2)
 			//		levels.Add ("_Level_Selection"); //level (2,2)
 			//		levels.Add ("_Level_Selection"); //level (3,2)
+
+			// Success page after game complete (Level 9 complete)
+			levels.Add ("_Success");
 
 			levels_initialized = true;
 		}
