@@ -12,8 +12,10 @@ public class Button : MonoBehaviour {
 	Vector3 holdMov;
 	Vector3 holdRot;
 	bool pressed = false;
+	bool standingOn = false;
 	bool curMoving = false;
 	bool curRotating = false;
+	Transform butt;
 	
 	private AudioSource source;
 	public AudioClip buttonOn;
@@ -34,10 +36,14 @@ public class Button : MonoBehaviour {
 	
 		holdMov = controlObject.transform.position;
 		holdRot = controlObject.transform.eulerAngles;
+
+		butt = transform.FindChild("Butt");
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		ButtonMod();
+
 		//print (hold + " " + controlObject.transform.position.x);
 		//the object is not in the same position as the last frame, so it's currently moving
 		if (controlObject.transform.position != holdMov) {
@@ -57,35 +63,29 @@ public class Button : MonoBehaviour {
 		int layerMask = 1 << LayerMask.NameToLayer ("PlayerLayer");
 		Vector3 rayCenter = transform.position;
 		rayCenter.y -= 0.5f;
-		if (Physics.Raycast (rayCenter, Vector3.up, .8f, layerMask) && !pressed && !curMoving && !curRotating) {
-			if (pressed == false){
-				source.PlayOneShot(buttonOn);
-			}
-			pressed = true;
-			if (moveOrRotate == MoveOrRotate.Move)
-				controlObject.Move ();
-			else if (moveOrRotate == MoveOrRotate.Rotate)
-				controlObject.Rotate();
-			else if (moveOrRotate == MoveOrRotate.Once) {
-				controlObject.MoveOnce(moveOnceLoc);
-				foreach (Transform child in transform) {
-					if (child.name == "Button 2") {
-						Destroy (child.gameObject);
-					} else if (child.name == "part 2") {
-						Destroy (child.gameObject);
-					} else if (child.name == "part 3") {
-						Destroy (child.gameObject);
-					} else {
-						break;
-					}
+		if (Physics.Raycast (rayCenter, Vector3.up, .8f, layerMask)) {
+			standingOn = true;
+			if (!pressed && !curMoving && !curRotating) {
+				if (pressed == false){
+					source.PlayOneShot(buttonOn);
 				}
-				Destroy (gameObject.GetComponent<Button>());
-			}
-			else { //All
-				controlObject.Move ();
-				controlObject.Rotate ();
+				pressed = true;
+				if (moveOrRotate == MoveOrRotate.Move)
+					controlObject.Move ();
+				else if (moveOrRotate == MoveOrRotate.Rotate)
+					controlObject.Rotate();
+				else if (moveOrRotate == MoveOrRotate.Once) {
+					controlObject.MoveOnce(moveOnceLoc);
+					Destroy (transform.FindChild("Butt").gameObject);
+					Destroy (gameObject.GetComponent<Button>());
+				}
+				else { //All
+					controlObject.Move ();
+					controlObject.Rotate ();
+				}
 			}
 		} else if(!Physics.Raycast (rayCenter, Vector3.up, .8f, layerMask)) {
+			standingOn = false;
 			pressed = false;
 			if (pressed == true){
 				source.PlayOneShot(buttonOff);
@@ -94,5 +94,16 @@ public class Button : MonoBehaviour {
 		
 		holdMov = controlObject.transform.position;
 		holdRot = controlObject.transform.eulerAngles;
+
+	}
+
+	void ButtonMod() {
+		Vector3 newPos = butt.localPosition;
+		if (standingOn) {
+			newPos.y = -0.1f;
+		} else {
+			newPos.y = 0.1f;
+		}
+		butt.localPosition = newPos;
 	}
 }
