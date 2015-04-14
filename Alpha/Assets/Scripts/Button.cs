@@ -8,7 +8,7 @@ public class Button : MonoBehaviour {
 	public LinearPlatform controlObject;
 	public MoveOrRotate moveOrRotate = MoveOrRotate.Rotate;
 	public Vector3 moveOnceLoc;
-	
+
 	Vector3 holdMov;
 	Vector3 holdRot;
 	bool pressed = false;
@@ -34,10 +34,12 @@ public class Button : MonoBehaviour {
 	
 		holdMov = controlObject.transform.position;
 		holdRot = controlObject.transform.eulerAngles;
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
+
 		//print (hold + " " + controlObject.transform.position.x);
 		//the object is not in the same position as the last frame, so it's currently moving
 		if (controlObject.transform.position != holdMov) {
@@ -75,6 +77,8 @@ public class Button : MonoBehaviour {
 						Destroy (child.gameObject);
 					} else if (child.name == "part 3") {
 						Destroy (child.gameObject);
+					} else if (child.name == "Cube 2") {
+						Destroy (child.gameObject);
 					} else {
 						break;
 					}
@@ -85,14 +89,22 @@ public class Button : MonoBehaviour {
 				controlObject.Move ();
 				controlObject.Rotate ();
 			}
+
+
 		} else if(!Physics.Raycast (rayCenter, Vector3.up, .8f, layerMask)) {
 			pressed = false;
 			if (pressed == true){
 				source.PlayOneShot(buttonOff);
 			}
+
+		
 		}
 		
 		holdMov = controlObject.transform.position;
 		holdRot = controlObject.transform.eulerAngles;
+
+
 	}
+
+
 }
