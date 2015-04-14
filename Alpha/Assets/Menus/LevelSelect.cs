@@ -63,7 +63,11 @@ public class LevelSelect : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 
-		if(Input.GetKeyUp(KeyCode.UpArrow)){
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			Application.LoadLevel("_Start_Screen");
+		}
+
+		if(Input.GetKeyDown(KeyCode.UpArrow)){
 			if(current_y > 0){
 				current_y--;
 				newPos = grid[current_x + current_y * y_location_mult];
@@ -74,7 +78,7 @@ public class LevelSelect : MonoBehaviour {
 					ShakeCursor();
 			}
 		}
-		else if(Input.GetKeyUp(KeyCode.DownArrow)){
+		else if(Input.GetKeyDown(KeyCode.DownArrow)){
 			if(current_y < grid_max_y - 1){
 				current_y++;
 				newPos = grid[current_x + current_y * y_location_mult];
@@ -86,7 +90,7 @@ public class LevelSelect : MonoBehaviour {
 			}
 		}
 
-		else if(Input.GetKeyUp(KeyCode.LeftArrow)){
+		else if(Input.GetKeyDown(KeyCode.LeftArrow)){
 			if(current_x > 0){
 				current_x--;
 				newPos = grid[current_x + current_y * y_location_mult];
@@ -97,7 +101,7 @@ public class LevelSelect : MonoBehaviour {
 					ShakeCursor();
 			}
 		}
-		else if(Input.GetKeyUp(KeyCode.RightArrow)){
+		else if(Input.GetKeyDown(KeyCode.RightArrow)){
 			if(current_x < grid_max_x - 1){
 				current_x++;
 				newPos = grid[current_x + current_y * y_location_mult];
@@ -116,7 +120,7 @@ public class LevelSelect : MonoBehaviour {
 		MoveScreen ();
 
 		//Load the level the cursor is currently highlighting
-		if (Input.GetKeyUp (KeyCode.Return))
+		if (Input.GetKeyDown (KeyCode.Return))
 			LoadLevel (current_x, current_y);
 	}
 

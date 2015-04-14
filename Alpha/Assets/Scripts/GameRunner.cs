@@ -96,19 +96,19 @@ public class GameRunner : MonoBehaviour {
 		
 		//deathText.text = "";
 		
-		if(Input.GetKeyUp(KeyCode.Escape)) {
-			Application.LoadLevel("_Level_Selection");
+		if(Input.GetKeyDown(KeyCode.Escape)) {
+			Application.LoadLevel("_Start_Screen");
 		}
 		
 		//reset level on press of R key
-		if (Input.GetKeyUp (KeyCode.R)) {
+		if (Input.GetKeyDown (KeyCode.R)) {
 			Time.timeScale = 1;
 			Application.LoadLevel(Application.loadedLevel);
 			dead = false;
 		}
 		
 		//press esc to pause and unpause level
-		if (Input.GetKeyUp (KeyCode.P) && dead == false) {
+		if (Input.GetKeyDown (KeyCode.P) && dead == false) {
 			if (Time.timeScale == 0) {
 				pauseText.text = "";
 				Time.timeScale = 1;
@@ -118,9 +118,6 @@ public class GameRunner : MonoBehaviour {
 				pauseText.text = "Pause";
 			}	
 		}
-		
-		if(Input.GetKeyUp(KeyCode.Escape))
-			Application.LoadLevel("_Level_Selection");
 	}
 	
 	bool AllLevelsDone(){

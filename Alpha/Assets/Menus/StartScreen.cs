@@ -11,33 +11,32 @@ public class StartScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		LevelSelect.initLevels ();
-
-
+		if (Application.loadedLevelName == "_Start_Screen")
+			InitStartScreenOptions ();
 	}
 
 	void InitStartScreenOptions() {
-		if (Application.loadedLevelName == "_Start_Screen") {
-			selector = GameObject.Find("Selector");
+		selector = GameObject.Find("Selector");
 
-			optionScenes = new string[3] {"", "_Level_Selection", "_Instructions"};
-			optionsPos = new Vector3[3];
+		optionScenes = new string[3] {"_Transition_1", "_Level_Selection", "_Instructions"};
+		optionsPos = new Vector3[3];
 
-			optionsPos[0] = selector.transform.position;
-			optionsPos[1] = new Vector3(optionsPos[0].x, optionsPos[0].y, optionsPos[0].z);
-			optionsPos[2] = new Vector3(optionsPos[1].x, optionsPos[1].y, optionsPos[1].z);
-		}
+		optionsPos[0] = selector.transform.position;
+		optionsPos[1] = new Vector3(optionsPos[0].x, optionsPos[0].y - 1.4f, optionsPos[0].z);
+		optionsPos[2] = new Vector3(optionsPos[1].x, optionsPos[1].y - 1.4f, optionsPos[1].z);
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if (Input.GetKeyDown(KeyCode.Escape)) {
+			Application.LoadLevel("_Start_Screen");
+		}
+
 		if (Application.loadedLevelName == "_Start_Screen") {
 			StartScreenRun ();
 		}
 		else if (Application.loadedLevelName == "_Level_Selection"){
 			LevelSelection ();
-		}
-		else if (Application.loadedLevelName == "_Instructions"){
-			Instructions ();
 		}
 		else if (Application.loadedLevelName == "_Success"){
 			Success ();
@@ -46,9 +45,9 @@ public class StartScreen : MonoBehaviour {
 
 	void StartScreenRun() {
 		if (Input.GetKeyDown(KeyCode.UpArrow) || Input.GetKeyDown(KeyCode.W)) {
-			MoveSelector(1);
-		} else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) {
 			MoveSelector(-1);
+		} else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) {
+			MoveSelector(1);
 		} else if (Input.GetKeyDown(KeyCode.Return)) {
 			Application.LoadLevel(optionScenes[selectorPos]);
 		}
@@ -57,11 +56,8 @@ public class StartScreen : MonoBehaviour {
 	void MoveSelector(int dir) {
 		selectorPos += dir;
 		selectorPos = selectorPos % 3;
+		selectorPos = selectorPos < 0 ? Mathf.Abs (selectorPos-1) : Mathf.Abs(selectorPos);
 		selector.transform.position = optionsPos[selectorPos];
-	}
-
-	void Instructions() {
-
 	}
 
 	void LevelSelection() {
