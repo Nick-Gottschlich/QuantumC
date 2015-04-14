@@ -38,7 +38,6 @@ public class MoveableBlock : MonoBehaviour {
 	}
 
 	public bool Push(Direction dir) {
-		if (GameEngine.isHeavyMode) return false;
 		float teleMod = 1f;
 		if (dir == Direction.UP) {
 			if (curPad.teleportOnUp) {
