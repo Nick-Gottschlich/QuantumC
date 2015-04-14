@@ -40,6 +40,6 @@ public class Pad : MonoBehaviour {
 	public bool CorrectAngle() {
 		bool around0 = (transform.eulerAngles.z < 1f && transform.eulerAngles.z >= -0.1f) || (transform.eulerAngles.z < 360f && transform.eulerAngles.z >= 359f);
 		bool around180 = (transform.eulerAngles.z < 181f && transform.eulerAngles.z >= 179f);
-		return around0 || around180;
+		return isSlope || around0 || around180;
 	}
 }
