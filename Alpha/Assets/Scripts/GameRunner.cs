@@ -84,11 +84,15 @@ public class GameRunner : MonoBehaviour {
 			
 			levels_completed[Application.loadedLevelName] = true;  //Update levels completed
 			
-			if(Input.GetKeyUp(KeyCode.Return) && !AllLevelsDone()) {
-				//Load the next level in the sequence
-				LevelSelect.current_level_id++;
-				Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
-			}
+			if(Input.GetKeyUp(KeyCode.Return)) {
+			   if (!AllLevelsDone()) {
+					//Load the next level in the sequence
+					LevelSelect.current_level_id++;
+					Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
+				} else {
+					Application.LoadLevel("_Success");
+				}
+			} 
 		}
 		
 		//deathText.text = "";
@@ -118,15 +122,16 @@ public class GameRunner : MonoBehaviour {
 	}
 	
 	bool AllLevelsDone(){
-		foreach (bool completed in levels_completed.Values) {
-			//			print("Count: " + levels_completed.Values.Count);
-			
-			if (!completed)
-				return false;
-		}
-		
-		//		print ("blah");
-		return true;
+//		foreach (bool completed in levels_completed.Values) {
+//			//			print("Count: " + levels_completed.Values.Count);
+//			
+//			if (!completed)
+//				return false;
+//		}
+//		
+//		//		print ("blah");
+//		return true;
+		return LevelSelect.current_level_id + 1 >= LevelSelect.num_levels;
 	}
 	
 	

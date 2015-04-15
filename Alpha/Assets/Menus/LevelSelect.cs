@@ -32,6 +32,8 @@ public class LevelSelect : MonoBehaviour {
 
 	public static int current_level_id = 0;
 
+	public static int num_levels = 0;
+
 	// Use this for initialization
 	void Start () {
 
@@ -173,8 +175,9 @@ public class LevelSelect : MonoBehaviour {
 			//		levels.Add ("_Level_Selection"); //level (2,2)
 			//		levels.Add ("_Level_Selection"); //level (3,2)
 
-			// Success page after game complete (Level 9 complete)
-			levels.Add ("_Success");
+			foreach (string l in levels) {
+				num_levels++;
+			}
 
 			levels_initialized = true;
 		}
