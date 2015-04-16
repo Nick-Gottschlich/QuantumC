@@ -225,7 +225,7 @@ public class PlayerControl : MonoBehaviour {
 			if (pad.IsEmpty ())
 				MoveToPad(pad);
 		} else {
-			print ("could not push");
+			//print ("could not push");
 		}
 	}
 

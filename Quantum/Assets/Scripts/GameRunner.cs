@@ -107,6 +107,12 @@ public class GameRunner : MonoBehaviour {
 			Application.LoadLevel(Application.loadedLevel);
 			dead = false;
 		}
+		//reset level on press of enter if dead
+		if (Input.GetKeyDown (KeyCode.Return) && dead) {
+			Time.timeScale = 1;
+			Application.LoadLevel(Application.loadedLevel);
+			dead = false;
+		}
 		
 		//press esc to pause and unpause level
 		if (Input.GetKeyDown (KeyCode.P) && dead == false) {
