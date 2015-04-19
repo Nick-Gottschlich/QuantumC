@@ -42,6 +42,14 @@ public class StartScreen : MonoBehaviour {
 		else if (Application.loadedLevelName == "_Success"){
 			Success ();
 		}
+		
+		if (Application.loadedLevelName == "_Instructions") {
+			if (Input.GetKey(KeyCode.Return)) {
+				GameRunner.loadingMessage();
+				Application.LoadLevel("_Start_Screen");
+			}
+		}
+				
 	}
 
 	void StartScreenRun() {
