@@ -87,9 +87,10 @@ public class LevelTransition : MonoBehaviour {
 					p1_t2.GetComponent<GUITexture>().enabled = true;
 					lines_read++;
 				}
-				else if (Input.GetKeyUp (KeyCode.Return))
+				else if (Input.GetKeyUp (KeyCode.Return)) {
 					GameRunner.loadingMessage();
 					Application.LoadLevel ("Nick_Level_3_box_and_laser_level");
+				}
 			}
 		}
 		else if (Application.loadedLevelName == "_Transition_5") {
