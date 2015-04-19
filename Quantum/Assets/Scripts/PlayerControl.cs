@@ -29,6 +29,8 @@ public class PlayerControl : MonoBehaviour {
 	float lastMove = 0f;
 	Quaternion platform_last;
 	
+	Vector3					initialMeshPos;
+	
 	// Use this for initialization
 	void Start () {
 		head = transform.FindChild("Pad").GetComponent<Pad>();
@@ -39,6 +41,12 @@ public class PlayerControl : MonoBehaviour {
 		right = transform.FindChild("Right").gameObject;
 
 		curPad = startPad;
+		
+		Transform mesh = transform.FindChild("zero");
+		if (!mesh) {
+			mesh = transform.FindChild("one");
+		}
+		initialMeshPos = mesh.localPosition;
 	}
 	
 	// Update is called once per frame
@@ -101,6 +109,7 @@ public class PlayerControl : MonoBehaviour {
 		newPos = new Vector3 (curPad.transform.position.x, curPad.transform.position.y + 0.5f, curPad.transform.position.z);
 
 		transform.position = Vector3.Lerp (transform.position, newPos, Time.deltaTime * smooth);
+		ReturnFeedbackToZero();
 	}
 
 	void CheckMyPadForSomeoneElse() {
@@ -149,40 +158,56 @@ public class PlayerControl : MonoBehaviour {
 			}
 		} 
 		else if (Time.timeScale != 0) {
-			//give some feedback to player to show they can't move that direction
-			if (searchPos == up && !feedbackMovement) {
-				//slight movement in positive x direction
-				Vector3 hold = transform.position;
-				hold.x += .75f;
-				transform.position = Vector3.Lerp (transform.position, hold, .8f);
-				feedbackMovement = true;
-				timeSinceFeedback = Time.time;
-			}
-			if (searchPos == down && !feedbackMovement) {
-				//slight movement in negative x direction
-				Vector3 hold = transform.position;
-				hold.x -= .75f;
-				transform.position = Vector3.Lerp (transform.position, hold, .8f);
-				feedbackMovement = true;
-				timeSinceFeedback = Time.time;
-			}
-			if (searchPos == left && !feedbackMovement) {
-				//slight movement in positive z direction
-				Vector3 hold = transform.position;
-				hold.z += .75f;
-				transform.position = Vector3.Lerp (transform.position, hold, .8f);
-				feedbackMovement = true;
-				timeSinceFeedback = Time.time;
-			}
-			if (searchPos == right && !feedbackMovement) {
-				//slight movement in negative z direction
-				Vector3 hold = transform.position;
-				hold.z -= .75f;
-				transform.position = Vector3.Lerp (transform.position, hold, .8f);
-				feedbackMovement = true;
-				timeSinceFeedback = Time.time;
-			}
+			FeedBackMove(searchPos);
 		}
+	}
+	
+	void FeedBackMove(GameObject searchPos) {
+		Transform t = transform.FindChild("zero");
+		if (!t) {
+			t = transform.FindChild("one");
+		}
+		//give some feedback to player to show they can't move that direction
+		if (searchPos == up && !feedbackMovement) {
+			//slight movement in positive x direction
+			Vector3 hold = t.localPosition;
+			hold.x += .75f;
+			t.localPosition = hold;
+			feedbackMovement = true;
+			timeSinceFeedback = Time.time;
+		}
+		if (searchPos == down && !feedbackMovement) {
+			//slight movement in negative x direction
+			Vector3 hold = t.localPosition;
+			hold.x -= .75f;
+			t.localPosition = Vector3.Lerp (t.localPosition, hold, .8f);
+			feedbackMovement = true;
+			timeSinceFeedback = Time.time;
+		}
+		if (searchPos == left && !feedbackMovement) {
+			//slight movement in positive z direction
+			Vector3 hold = t.localPosition;
+			hold.z += .75f;
+			t.localPosition = Vector3.Lerp (t.localPosition, hold, .8f);
+			feedbackMovement = true;
+			timeSinceFeedback = Time.time;
+		}
+		if (searchPos == right && !feedbackMovement) {
+			//slight movement in negative z direction
+			Vector3 hold = t.localPosition;
+			hold.z -= .75f;
+			t.localPosition = Vector3.Lerp (t.localPosition, hold, .8f);
+			feedbackMovement = true;
+			timeSinceFeedback = Time.time;
+		}
+	}
+	
+	void ReturnFeedbackToZero() {
+		Transform t = transform.FindChild("zero");
+		if (!t) {
+			t = transform.FindChild("one");
+		}
+		t.localPosition = Vector3.Lerp (t.localPosition, initialMeshPos, smooth * Time.deltaTime);
 	}
 	
 	void TeleportMovement(Pad teleportPad, float xMod, float zMod) {
