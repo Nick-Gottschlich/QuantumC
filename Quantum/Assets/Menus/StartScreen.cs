@@ -29,6 +29,7 @@ public class StartScreen : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Input.GetKeyDown(KeyCode.Escape)) {
+			GameRunner.loadingMessage();
 			Application.LoadLevel("_Start_Screen");
 		}
 
@@ -49,6 +50,7 @@ public class StartScreen : MonoBehaviour {
 		} else if (Input.GetKeyDown(KeyCode.DownArrow) || Input.GetKeyDown(KeyCode.S)) {
 			MoveSelector(1);
 		} else if (Input.GetKeyDown(KeyCode.Return)) {
+			GameRunner.loadingMessage();
 			Application.LoadLevel(optionScenes[selectorPos]);
 		}
 	}
@@ -64,10 +66,14 @@ public class StartScreen : MonoBehaviour {
 		GameObject light = GameObject.Find ("Directional Light");
 		light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
 		
-		if(Input.GetKeyUp (KeyCode.I))
+		if(Input.GetKeyUp (KeyCode.I)) {
+			GameRunner.loadingMessage();
 			Application.LoadLevel ("_Instructions");
-		else if(Input.GetKeyUp (KeyCode.O))
+		}
+		else if(Input.GetKeyUp (KeyCode.O)) {
+			GameRunner.loadingMessage();
 			Application.LoadLevel ("_Objective");
+		}
 	}
 
 	void Success() {
@@ -75,8 +81,10 @@ public class StartScreen : MonoBehaviour {
 		light.transform.rotation = Quaternion.Euler(new Vector3(21.91902f, 12.48193f, 2.010067f));
 		//			light.transform.rotation = Quaternion.Euler(new Vector3(26.75745f, 0.8023775f, 1.781754f));
 		
-		if (Input.GetKeyUp (KeyCode.Return))
+		if (Input.GetKeyUp (KeyCode.Return)) {
+			GameRunner.loadingMessage();
 			Application.LoadLevel ("_Start_Screen");
+		}
 	}
 
 }

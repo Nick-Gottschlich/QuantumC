@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.UI;
 
-//make the death text flash doeeeeeeeeeee
-
 public class GameRunner : MonoBehaviour {
 	static public GameRunner S;
 	
@@ -18,12 +16,15 @@ public class GameRunner : MonoBehaviour {
 	public Text winText;
 	public Text pauseText;
 	public static Text deathText;
+	public static Text loadingText;
 	public AudioClip winSound;
 	public AudioClip deathSound;
 	public AudioClip alarm;
 	public AudioClip deathSound2;
 	
 	private AudioSource source;
+	
+	//static GameObject loadingScreen = GameObject.Find("LoadingObject");
 	
 	//GameObject P1 = GameObject.Find("Player1");
 	//GameObject P2 = GameObject.Find("Player2");
@@ -46,11 +47,17 @@ public class GameRunner : MonoBehaviour {
 		GameObject DeathDisp = GameObject.Find("Death");
 		deathText = DeathDisp.GetComponent<Text>();
 		
+		GameObject LoadDisp = GameObject.Find ("Loading");
+		loadingText = LoadDisp.GetComponent<Text>();
+		
 		winText.text = "";
 		pauseText.text = "";
 		deathText.text = "";
+		loadingText.text = "";
 		
 		Time.timeScale = 1;
+		
+		//loadingScreen = GameObject.Find("LoadingObject");
 	}
 	
 	void Awake(){
@@ -88,33 +95,39 @@ public class GameRunner : MonoBehaviour {
 			   if (!AllLevelsDone()) {
 					//Load the next level in the sequence
 					LevelSelect.current_level_id++;
+					
+					loadingText.text = "LOADING";
 					Application.LoadLevel(LevelSelect.levels[LevelSelect.current_level_id]);
 				} else {
+					loadingText.text = "LOADING";
 					Application.LoadLevel("_Success");
 				}
-			} 
+			}
 		}
 		
 		//deathText.text = "";
 		
 		if(Input.GetKeyDown(KeyCode.Escape)) {
+			loadingText.text = "LOADING";
 			Application.LoadLevel("_Start_Screen");
 		}
 		
 		//reset level on press of R key
 		if (Input.GetKeyDown (KeyCode.R)) {
 			Time.timeScale = 1;
+			//loadingText.text = "LOADING";
 			Application.LoadLevel(Application.loadedLevel);
 			dead = false;
 		}
 		//reset level on press of enter if dead
 		if (Input.GetKeyDown (KeyCode.Return) && dead) {
 			Time.timeScale = 1;
+			//loadingText.text = "LOADING";
 			Application.LoadLevel(Application.loadedLevel);
 			dead = false;
 		}
 		
-		//press esc to pause and unpause level
+		//press P to pause and unpause level
 		if (Input.GetKeyDown (KeyCode.P) && dead == false) {
 			if (Time.timeScale == 0) {
 				pauseText.text = "";
@@ -166,4 +179,12 @@ public class GameRunner : MonoBehaviour {
 		
 		deathText.text = "ALERT: \n FIREWALL \n ENGAGED";
 	}
+	
+	public static void loadingMessage() {
+		GameObject LoadDisp = GameObject.Find ("Loading");
+		loadingText = LoadDisp.GetComponent<Text>();	
+
+		loadingText.text = "LOADING";
+	}
+		
 }

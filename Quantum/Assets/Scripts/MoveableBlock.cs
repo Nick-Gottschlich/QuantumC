@@ -98,7 +98,7 @@ public class MoveableBlock : MonoBehaviour {
 			MoveToPad(pad);
 			return true;
 		}
-		print ("didn't find jack");
+		//print ("didn't find jack");
 		return false;
 	}
 	

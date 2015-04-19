@@ -66,6 +66,7 @@ public class LevelSelect : MonoBehaviour {
 	void Update () {
 
 		if (Input.GetKeyDown(KeyCode.Escape)) {
+			GameRunner.loadingMessage();
 			Application.LoadLevel("_Start_Screen");
 		}
 
@@ -122,8 +123,10 @@ public class LevelSelect : MonoBehaviour {
 		MoveScreen ();
 
 		//Load the level the cursor is currently highlighting
-		if (Input.GetKeyDown (KeyCode.Return))
+		if (Input.GetKeyDown (KeyCode.Return)) {
+			GameRunner.loadingMessage();
 			LoadLevel (current_x, current_y);
+		}
 	}
 
 	void ShakeCursor(){
@@ -137,6 +140,7 @@ public class LevelSelect : MonoBehaviour {
 		current_level_id = x + y * y_location_mult;
 //		print ("X: " + x);
 //		print ("Y: " + y);
+		GameRunner.loadingMessage();
 		Application.LoadLevel (levels [current_level_id]);
 	}
 

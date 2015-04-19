@@ -15,12 +15,16 @@ public class LevelTransition : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (Application.loadedLevelName == "_Transition_1") {			
-			if (Input.GetKeyUp (KeyCode.Return))
+			if (Input.GetKeyUp (KeyCode.Return)) {
+				GameRunner.loadingMessage();
 				Application.LoadLevel ("Nick_Level_2_basictutorial");
+			}
 		}
 		else if (Application.loadedLevelName == "_Transition_1_2") {			
-			if (Input.GetKeyUp (KeyCode.Return))
+			if (Input.GetKeyUp (KeyCode.Return)) {
+				GameRunner.loadingMessage();
 				Application.LoadLevel ("Nick_Level_6");
+			}
 		}
 		else if (Application.loadedLevelName == "_Transition_2") {
 			extra_lines_of_text = 2;
@@ -42,6 +46,7 @@ public class LevelTransition : MonoBehaviour {
 				}
 				else if(lines_read == extra_lines_of_text){
 					lines_read = 0;
+					GameRunner.loadingMessage();
 					Application.LoadLevel ("Nick_Level_4_tutorialforboxandlasers");
 				}
 			}
@@ -66,6 +71,7 @@ public class LevelTransition : MonoBehaviour {
 				}
 				else if(lines_read == extra_lines_of_text){
 					lines_read = 0;
+					GameRunner.loadingMessage();
 					Application.LoadLevel ("Nick_Level_1_devils_tuning_fork_RESKIN");
 				}
 			}
@@ -82,6 +88,7 @@ public class LevelTransition : MonoBehaviour {
 					lines_read++;
 				}
 				else if (Input.GetKeyUp (KeyCode.Return))
+					GameRunner.loadingMessage();
 					Application.LoadLevel ("Nick_Level_3_box_and_laser_level");
 			}
 		}
@@ -112,13 +119,16 @@ public class LevelTransition : MonoBehaviour {
 				}
 				else if(lines_read == extra_lines_of_text){
 					lines_read = 0;
+					GameRunner.loadingMessage();
 					Application.LoadLevel ("_game_play_custom_level_Jay_2");
 				}
 			}
 		}
 		else if (Application.loadedLevelName == "_Transition_6") {			
-			if (Input.GetKeyUp (KeyCode.Return))
+			if (Input.GetKeyUp (KeyCode.Return)) {
+				GameRunner.loadingMessage();
 				Application.LoadLevel ("Nick_Level_5_reflexes");
+				}
 		}
 		else if (Application.loadedLevelName == "_Transition_7") {
 			extra_lines_of_text = 2;
@@ -140,6 +150,7 @@ public class LevelTransition : MonoBehaviour {
 				}
 				else if(lines_read == extra_lines_of_text){
 					lines_read = 0;
+					GameRunner.loadingMessage();
 					Application.LoadLevel ("_game_play_custom_level_Jay_4");
 				}
 			}
@@ -164,6 +175,7 @@ public class LevelTransition : MonoBehaviour {
 				}
 				else if(lines_read == extra_lines_of_text){
 					lines_read = 0;
+					GameRunner.loadingMessage();
 					Application.LoadLevel ("Pratik_Level_1");
 				}
 			}
