@@ -149,7 +149,7 @@ public class LevelSelect : MonoBehaviour {
 
 	public static void initLevels(){
 		if (!levels_initialized) {
-			print("Levels initialized");
+			//print("Levels initialized");
 
 			//		levels.Add ("Nick_Level_2_basictutorial"); //level (0,0)
 			levels.Add ("_Transition_1"); //level (0,0)
