@@ -70,9 +70,20 @@ public class LevelTransition : MonoBehaviour {
 				}
 			}
 		}
-		else if (Application.loadedLevelName == "_Transition_4") {			
-			if (Input.GetKeyUp (KeyCode.Return))
-				Application.LoadLevel ("Nick_Level_3_box_and_laser_level");
+		else if (Application.loadedLevelName == "_Transition_4") {
+			extra_lines_of_text = 1;
+			
+			if (Input.GetKeyUp (KeyCode.Return)){
+				if(lines_read == 0){ //Disable current text, enable next text
+					GameObject p1_t1 = GameObject.Find ("p1_Bubble_1");
+					GameObject p1_t2 = GameObject.Find ("p1_Bubble_2");
+					p1_t1.GetComponent<GUITexture>().enabled = false;
+					p1_t2.GetComponent<GUITexture>().enabled = true;
+					lines_read++;
+				}
+				else if (Input.GetKeyUp (KeyCode.Return))
+					Application.LoadLevel ("Nick_Level_3_box_and_laser_level");
+			}
 		}
 		else if (Application.loadedLevelName == "_Transition_5") {
 			extra_lines_of_text = 3;
