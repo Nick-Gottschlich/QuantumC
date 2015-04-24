@@ -1,0 +1,22 @@
+Project Management
+-------
+Our project management and issue tracking was handled partially through JIRA and partially through the burndown spreadsheet since we didn't gain access to JIRA until around our 2nd/3rd week. 
+
+Our JIRA project is viewable here
+http://office-hours.eecs.umich.edu:8080/secure/RapidBoard.jspa?rapidView=8&projectKey=TQ&view=reporting&chart=burndownChart&sprint=12
+
+We recorded issues and created 4 sprints with each sprint having deadlines that tracked with project submission deadlines.
+Unfortunately, we were not able to figure out how to record time in the issues we created. There was no clearly indicated field for entering estimated time and completed time.
+
+It seems, instead, that the Burndown report tracked "story points" which we did not assign to our issues.
+
+Our burndown spreadsheet is also viewable, but it is not accurate since we did not keep it up to date after the first week.
+Burndown Spreadsheet (not up to date or accurate)
+https://docs.google.com/a/umich.edu/spreadsheets/d/1gA1AJKJ_4CbkXIdhF8aUfXupfEWSbaxSXByk2jVC9Q8/edit?usp=sharing
+
+Github
+------
+We used github to collborate and track all of our code changes. The repository is private so if you ever feel like looking at our commits, contact jayhan@umich.edu with your github username to be added to the repo.
+
+The URL is below.
+https://github.com/jayjhan8/Quantum
