@@ -11,6 +11,7 @@ public class StartScreen : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		LevelSelect.initLevels ();
+		Time.timeScale = 1;
 		if (Application.loadedLevelName == "_Start_Screen")
 			InitStartScreenOptions ();
 	}

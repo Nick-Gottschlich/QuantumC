@@ -19,7 +19,7 @@ public class LevelSelect : MonoBehaviour {
 	int y_location_mult = 3;
 
 	float smooth = 25f;
-	float journeyDistance = 0f;
+	float journeyDistance = 0.1f;
 
 	Vector3 newPos;
 	Vector3 start_pos;
